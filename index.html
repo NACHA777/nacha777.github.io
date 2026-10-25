@@ -1,40 +1,47 @@
 <!doctype html>
 <html lang="es">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<!-- INICIO -->
-<title>Campus San Joaquín</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="estilos.css">
-<!-- FIN-HEAD -->
-</head>
-<body>
-<!-- CUERPO -->
-<header class="cab">
-  <div class="cab-in">
-    <a class="marca" href="#mapa" aria-label="Ir al mapa">
-      <span class="logo">USM</span>
-      <span>
-        <strong>Campus San Joaquín</strong>
-        <small>Universidad Técnica Federico Santa María</small>
-      </span>
-    </a>
-    <nav class="tabs" aria-label="Secciones">
-      <a href="#mapa" data-tab="mapa">Mapa</a>
-      <a href="#bloque" data-tab="bloque">Bloque Sansano</a>
-      <a href="#comunidad" data-tab="comunidad">Comunidad</a>
-    </nav>
-  </div>
-</header>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <!-- INICIO -->
+    <title>Campus San Joaquín</title>
+    <meta name="claude:viewport-fit-sides" content="cover" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    />
+    <!-- el ?v=2 obliga al navegador a bajar la versión nueva: súbelo a v=3, v=4... en cada cambio -->
+    <link rel="stylesheet" href="estilos.css?v=2" />
+    <!-- FIN-HEAD -->
+  </head>
+  <body>
+    <!-- CUERPO -->
+    <header class="cab">
+      <div class="cab-in">
+        <a class="marca" href="#mapa" aria-label="Ir al mapa">
+          <span class="logo">USM</span>
+          <span>
+            <strong>Campus San Joaquín</strong>
+            <small>Universidad Técnica Federico Santa María</small>
+          </span>
+        </a>
+        <nav class="tabs" aria-label="Secciones">
+          <a href="#mapa" data-tab="mapa">Mapa</a>
+          <a href="#bloque" data-tab="bloque">Bloque Sansano</a>
+          <a href="#comunidad" data-tab="comunidad">Comunidad</a>
+        </nav>
+      </div>
+    </header>
 
-<main id="app"></main>
+    <main id="app"></main>
 
-<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
-<!-- FIN-CUERPO -->
-<script src="datos.js"></script>
-<script src="app.js"></script>
-</body>
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    <!-- FIN-CUERPO -->
+    <script src="datos.js?v=2"></script>
+    <script src="app.js?v=2"></script>
+  </body>
 </html>
