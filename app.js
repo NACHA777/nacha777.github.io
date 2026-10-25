@@ -1,10 +1,9 @@
-// Campus San Joaquín · app del mapa interactivo
 // HTML/CSS/JS sin librerías. Las vistas se eligen con el # de la URL:
 // #mapa, #lugar-2, #bloque, #comunidad, #publicar, #compartir, #ra-1
 
 const app = document.getElementById("app");
 
-// ---------- íconos (trazos estilo Lucide) ----------
+//íconos
 const trazos = {
   flecha: '<path d="M5 12h14M13 6l6 6-6 6"/>',
   atras: '<path d="M19 12H5M11 18l-6-6 6-6"/>',
@@ -38,7 +37,7 @@ function ico(n) {
   return `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${trazos[n]}</svg>`;
 }
 
-// ---------- utilidades ----------
+// utilidades
 const meses = [
   "enero",
   "febrero",
@@ -54,7 +53,7 @@ const meses = [
   "diciembre",
 ];
 
-// evita que texto escrito por usuarios se interprete como HTML
+// evita que texto escrito por usuarios se interprete como html
 function esc(t) {
   return String(t).replace(
     /[&<>"']/g,
@@ -99,7 +98,7 @@ function guardar(k, lista) {
   }
 }
 
-// lo que publica cada persona solo queda en su navegador (es una demo)
+// lo que publica cada persona solo queda en su navegador aun no terminada
 let misConvs = cargar("usm-convocatorias");
 let misExps = cargar("usm-experiencias");
 
@@ -121,11 +120,11 @@ function aviso(txt) {
   tToast = setTimeout(() => (t.hidden = true), 3200);
 }
 
-// ---------- ilustraciones (se usan cuando un lugar no tiene foto) ----------
+// se usan cuando un lugar no tiene foto
 function ilustracion(id) {
   let s = "";
   if (id == 1) {
-    // plaza con edificios y cordillera
+    // plaza con edificios
     s = `<rect width="320" height="150" fill="#CFE0EE"/>
       <path d="M0 78 50 46 90 66 140 36 200 70 250 44 320 72V100H0z" fill="#9FB4C4"/>
       <rect x="196" y="58" width="124" height="48" fill="#E9E3D8"/><rect x="196" y="58" width="124" height="7" fill="#8F7F6A"/>
@@ -144,7 +143,7 @@ function ilustracion(id) {
         )
         .join("")}`;
   } else if (id == 2) {
-    // placa sobre pedestal entre arbustos
+    // placa arbustos
     s = `<rect width="320" height="150" fill="#5E7F4C"/>
       ${[
         [20, 40, 40],
@@ -166,7 +165,7 @@ function ilustracion(id) {
       ${[84, 92, 100].map((y) => `<rect x="136" y="${y}" width="48" height="3" fill="#6A5438"/>`).join("")}
       <rect x="0" y="128" width="320" height="22" fill="#8C8577"/>`;
   } else if (id == 3) {
-    // cerro verde con árbol
+    // cerro verde con arbol
     s = `<rect width="320" height="150" fill="#D4E6F1"/>
       <path d="M0 90 60 70 120 80 200 62 320 84V150H0z" fill="#A8C3B0"/>
       <path d="M0 150V108Q120 70 230 96T320 104V150z" fill="#86B567"/>
@@ -181,7 +180,7 @@ function ilustracion(id) {
       ${[0, 1, 2, 3, 4, 5].map((i) => `<path d="M${-20 - i * 10} ${78 + i * 13}Q160 ${66 + i * 13} ${340 + i * 10} ${78 + i * 13}" stroke="#7E2E2B" stroke-width="9" fill="none"/>`).join("")}
       ${[40, 280].map((x) => `<rect x="${x - 3}" y="14" width="6" height="60" fill="#A6774F"/>`).join("")}`;
   } else {
-    // biblioteca: estantes con libros
+    // biblioteca estante con libros
     let libros = "";
     const cols = [
       "#7E4A3A",
@@ -215,9 +214,8 @@ function fotoLugar(l) {
   return `<div class="foto">${ilustracion(l.id)}<span class="marca-foto">Ilustración referencial</span></div>`;
 }
 
-// ---------- dibujo del mapa del campus ----------
-// Trazado esquemático basado en el plano oficial del Campus San Joaquín (piso 1).
-// Las coordenadas son las del plano: el área visible va de (MX, MY) y mide MW x MH.
+// dibujo del mapa del campus
+
 const MX = 40,
   MY = 70,
   MW = 1120,
@@ -319,8 +317,8 @@ function svgMapa() {
   </svg>`;
 }
 
-// ---------- zoom y arrastre del mapa ----------
-// v.z = zoom, v.x / v.y = desplazamiento en px, v.s = escala base
+//zoom y arrastre del mapa
+
 let v = null;
 
 function aplicar() {
@@ -426,7 +424,7 @@ function activarArrastre(m) {
   );
 }
 
-// ---------- vista: mapa ----------
+//  vista: mapa
 function htmlRecorrido() {
   return `
     <div class="rec-cab"><h2>${esMovil() ? "Tu recorrido sansano" : "Tu recorrido"}</h2><b>${lugares.length} puntos</b></div>
@@ -559,7 +557,7 @@ function abrirFicha(id) {
   else centrar(l.x, l.y, 0.62, 0.5);
 }
 
-// ---------- vista: Bloque Sansano ----------
+//vista: Bloque Sansano
 function vistaBloque(resaltar) {
   const lista = todasConvs();
   const mesesUsados = [
@@ -614,7 +612,6 @@ function vistaBloque(resaltar) {
   marcar(resaltar);
 }
 
-// ---------- vista: Comunidad ----------
 function vistaComunidad(resaltar) {
   const lista = todasExps();
   app.innerHTML = `
@@ -659,7 +656,7 @@ function vistaComunidad(resaltar) {
   marcar(resaltar);
 }
 
-// resalta una tarjeta (ej: al venir desde "Ver convocatoria")
+// resalta una tarjeta
 function marcar(id) {
   if (!id) return;
   const t = document.getElementById(id);
@@ -669,7 +666,7 @@ function marcar(id) {
   setTimeout(() => t.classList.remove("brilla"), 2600);
 }
 
-// ---------- formularios ----------
+// formularios
 function opcionesLugar(nombre, elegido) {
   return `<div class="opciones" role="radiogroup">
     ${lugares
@@ -953,7 +950,7 @@ function vistaCompartir(lugarId) {
   };
 }
 
-// ---------- vista: realidad aumentada ----------
+// vista: realidad aumentada
 let stream = null;
 
 function apagarCamara() {
@@ -1050,7 +1047,7 @@ function vistaRA(id) {
   };
 }
 
-// ---------- navegación ----------
+// navegación
 let vistaActual = "";
 
 function render() {
