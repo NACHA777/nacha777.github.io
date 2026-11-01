@@ -744,7 +744,7 @@ function vistaPublicar() {
             <button class="btn btn-azul" type="submit">Publicar convocatoria</button>
             <a class="btn btn-linea" href="#bloque">Cancelar</a>
           </div>
-          <p class="demo">Formulario de demostración. La convocatoria solo se guarda en este navegador.</p>
+          <p class="demo">Tu convocatoria se publicará automáticamente y estará disponible para toda la comunidad.</p>
         </form>
         <aside class="lado">
           ${ico("megafono")}
@@ -839,33 +839,37 @@ function vistaPublicar() {
 
     const nueva = {
       ...d,
-      lugar: Number(d.lugar),
-      id: "mc" + Date.now(),
-      propia: true,
-      img,
+      lugar: Number(d.lugar)
     };
+    const boton = form.querySelector('[type="submit"]');
     try {
-      const boton = form.querySelector('[type="submit"]');
       if (boton) boton.disabled = true;
-
-      await USM_COMUNIDAD.enviar("convocatorias", {
+      const datos = {
         titulo: nueva.titulo,
         fecha: nueva.fecha,
         hora: nueva.hora,
         lugar_id: Number(nueva.lugar),
         descripcion: nueva.desc
-      });
-
+      };
+      console.log("Enviando convocatoria:", datos);
+      await USM_COMUNIDAD.enviar(
+        "convocatorias",
+        datos
+      );
+      console.log("Convocatoria guardada en Supabase");
       aviso("¡Convocatoria publicada!");
       await USM_COMUNIDAD.cargar();
       location.hash = "bloque";
-
     } catch (error) {
-      console.error(error);
+      console.error(
+        "Error al publicar convocatoria:",
+        error
+      );
       aviso("No se pudo publicar la convocatoria");
-
-      const boton = form.querySelector('[type="submit"]');
-      if (boton) boton.disabled = false;
+    } finally {
+      if (boton && boton.isConnected) {
+        boton.disabled = false;
+      }
     }
   };
 }
