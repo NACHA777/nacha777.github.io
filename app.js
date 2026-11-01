@@ -957,8 +957,15 @@ function vistaCompartir(lugarId) {
 let stream = null;
 
 function apagarCamara() {
-  if (stream) stream.getTracks().forEach((t) => t.stop());
-  stream = null;
+  if (stream){
+    stream.getTracks().forEach((t) => t.stop());
+    stream = null;
+  }
+  // al eliminar el iframe, se cierra la experiencia RA
+  const visorRA = document.getElementById("ra-frame");
+  if(visorRA){
+    visorRA.remove();
+  }
 }
 
 function guiaPlaca() {
@@ -999,55 +1006,106 @@ function vistaRA(id) {
   }
   app.innerHTML = `
     <section class="pagina ra">
-      <a class="volver" href="#lugar-${l.id}">${ico("atras")} Volver al Mapa</a>
-      <div class="pag-cab"><div>
-        <span class="etiqueta" style="display:flex;align-items:center;gap:6px">${ico("scan")} Experiencia RA</span>
-        <h1>Apunta tu cámara hacia la placa</h1>
-        <p class="lugar-ra">${esc(l.nombre)}</p>
-        <p>Encuadra ${esc(l.placa)} para comenzar.</p>
-      </div></div>
-      <div class="visor guia" id="visor">
+      <a class="volver" href="#lugar-${l.id}">
+        ${ico("atras")} Volver al Mapa
+      </a>
+
+      <div class="pag-cab">
+        <div>
+          <span class="etiqueta">
+            ${ico("scan")} Experiencia RA
+          </span>
+          <h1>Reconocimiento de monumentos</h1>
+          <p class="lugar-ra">${esc(l.nombre)}</p>
+          <p>Apunta tu cámara hacia la placa.</p>
+        </div>
+      </div>
+
+      <div class="visor guia" id="visor"
+           style="position:relative;overflow:hidden">
         ${guiaPlaca()}
-        <div class="esquinas"><i></i><i></i><i></i><i></i></div>
-        <span class="marca-foto">Guía ilustrativa · No es fotografía</span>
+        <div class="esquinas">
+          <i></i><i></i><i></i><i></i>
+        </div>
       </div>
-      <ul class="tips">
-        <li>${ico("foco")} Mantén la placa completa dentro del marco.</li>
-        <li>${ico("sol")} Busca buena luz y evita reflejos.</li>
-      </ul>
-      <p class="aviso" id="ra-aviso">${ico("info")} La experiencia pedirá acceso a tu cámara al iniciarse.</p>
+
+      <p class="aviso" id="ra-aviso">
+        Presiona iniciar para activar la cámara.
+      </p>
+
       <div class="ra-botones" id="ra-botones">
-        <button class="btn btn-azul" id="ra-iniciar">${ico("scan")} Iniciar experiencia RA ${ico("flecha")}</button>
-        <button class="btn btn-linea" id="ra-sin">Ver el contenido sin cámara</button>
+        <button class="btn btn-azul" id="ra-iniciar">
+          Iniciar experiencia RA
+        </button>
+        <button class="btn btn-linea" id="ra-sin">
+          Ver contenido sin cámara
+        </button>
       </div>
-    </section>`;
-
-  document.getElementById("ra-sin").onclick = () => mostrarCapa(l, true);
-
-  document.getElementById("ra-iniciar").onclick = async () => {
-    const av = document.getElementById("ra-aviso");
-    try {
-      stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "environment" },
-        audio: false,
-      });
-    } catch (e) {
-      av.innerHTML = `${ico("info")} No se pudo abrir la cámara. Revisa el permiso del navegador o abre la app desde tu celular. Mientras tanto puedes ver el contenido sin cámara.`;
+    </section>
+  `;
+  const visor = document.getElementById("visor");
+  const aviso = document.getElementById("ra-aviso");
+  const botones = document.getElementById("ra-botones");
+  document.getElementById("ra-sin").onclick = () => {
+    mostrarCapa(l, true);
+  };
+  document.getElementById("ra-iniciar").onclick = () => {
+    // Primera prueba: solo el Testamento (ID 2).
+    if (Number(l.id) !== 2) {
+      aviso.textContent =
+        "El reconocimiento de este lugar aún no está configurado.";
       return;
     }
-    const visor = document.getElementById("visor");
+
     visor.classList.remove("guia");
     visor.innerHTML = `
-      <video autoplay playsinline muted></video>
-      <div class="esquinas"><i></i><i></i><i></i><i></i></div>
-      <button class="btn btn-azul btn-chico" data-encuadre style="position:absolute;left:50%;bottom:14px;transform:translateX(-50%)">Ya encuadré la placa</button>`;
-    visor.querySelector("video").srcObject = stream;
-    visor.querySelector("[data-encuadre]").onclick = () => mostrarCapa(l);
-    av.innerHTML = `${ico("camara")} Cámara activa. Encuadra la placa dentro del marco.`;
-    document.getElementById("ra-botones").innerHTML =
-      `<button class="btn btn-linea" id="ra-parar">Detener cámara</button>`;
-    document.getElementById("ra-parar").onclick = () => vistaRA(id);
+      <iframe
+        id="ra-frame"
+        src="ra.html"
+        allow="camera"
+        title="Cámara de realidad aumentada"
+        style="width:100%;height:100%;
+               min-height:350px;border:0;
+               display:block">
+      </iframe>
+    `;
+    aviso.textContent =
+      "Buscando la placa del Testamento...";
+    botones.innerHTML = `
+      <button class="btn btn-linea" id="ra-parar">
+        Detener cámara
+      </button>
+    `;
+    document.getElementById("ra-parar").onclick = () => {
+      apagarCamara();
+      vistaRA(id);
+    };
   };
+  // Evitar registrar varias veces el mismo listener.
+  if (window.usmRAListener) {
+    window.removeEventListener(
+      "message", window.usmRAListener
+    );
+  }
+  window.usmRAListener = (evento) => {
+    if (evento.origin !== window.location.origin) return;
+    const frame = document.getElementById("ra-frame");
+    if (!frame || evento.source !== frame.contentWindow) {
+      return;
+    }
+    if (evento.data?.tipo === "USM_RA_ENCONTRADA") {
+      aviso.textContent = "¡Placa reconocida!";
+      mostrarCapa(l, false);
+    }
+    if (evento.data?.tipo === "USM_RA_PERDIDA") {
+      aviso.textContent =
+        "Placa fuera de cámara. Vuelve a enfocarla.";
+      visor.querySelector(".capa-ra")?.remove();
+    }
+  };
+  window.addEventListener(
+    "message", window.usmRAListener
+  );
 }
 
 // ---------- navegación ----------
@@ -1130,3 +1188,4 @@ window.addEventListener("resize", () => {
 });
 
 render();
+ 
