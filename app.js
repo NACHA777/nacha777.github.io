@@ -799,7 +799,7 @@ function vistaPublicar() {
     leer(e.dataTransfer.files[0]);
   };
 
-  form.onsubmit = (e) => {
+  form.onsubmit = async (e) => {
     e.preventDefault();
     limpiarErrores(form);
     const d = {
@@ -844,14 +844,29 @@ function vistaPublicar() {
       propia: true,
       img,
     };
-    misConvs.push(nueva);
-    const cupo = guardar("usm-convocatorias", misConvs);
-    aviso(
-      cupo
-        ? "Convocatoria publicada"
-        : "Convocatoria publicada (la imagen no se pudo guardar)",
-    );
-    location.hash = "bloque-" + nueva.id;
+    try {
+      const boton = form.querySelector('[type="submit"]');
+      if (boton) boton.disabled = true;
+
+      await USM_COMUNIDAD.enviar("convocatorias", {
+        titulo: nueva.titulo,
+        fecha: nueva.fecha,
+        hora: nueva.hora,
+        lugar_id: Number(nueva.lugar),
+        descripcion: nueva.desc
+      });
+
+      aviso("¡Convocatoria publicada!");
+      await USM_COMUNIDAD.cargar();
+      location.hash = "bloque";
+
+    } catch (error) {
+      console.error(error);
+      aviso("No se pudo publicar la convocatoria");
+
+      const boton = form.querySelector('[type="submit"]');
+      if (boton) boton.disabled = false;
+    }
   };
 }
 
@@ -909,7 +924,7 @@ function vistaCompartir(lugarId) {
     (document.getElementById("e-cont").textContent =
       txt.value.length + " / 400");
 
-  form.onsubmit = (e) => {
+  form.onsubmit = async (e) => {
     e.preventDefault();
     limpiarErrores(form);
     const icono = form.querySelector("[name=e-cat]:checked").value;
@@ -946,10 +961,26 @@ function vistaCompartir(lugarId) {
       id: "me" + Date.now(),
       propia: true,
     };
-    misExps.push(nueva);
-    guardar("usm-experiencias", misExps);
-    aviso("Experiencia compartida");
-    location.hash = "comunidad-" + nueva.id;
+    try {
+      const boton = form.querySelector('[type="submit"]');
+      if (boton) boton.disabled = true;
+      await USM_COMUNIDAD.enviar("experiencias", {
+        titulo: nueva.titulo,
+        texto: nueva.texto,
+        categoria: nueva.cat,
+        lugar_id: Number(nueva.lugar)
+      });
+
+      aviso("¡Experiencia publicada!");
+      await USM_COMUNIDAD.cargar();
+      location.hash = "comunidad";
+
+    } catch (error) {
+      console.error(error);
+      aviso("No se pudo publicar la experiencia");
+      const boton = form.querySelector('[type="submit"]');
+      if (boton) boton.disabled = false;
+    }
   };
 }
 
