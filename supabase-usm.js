@@ -1,7 +1,7 @@
 
  // Conexión pública del Mapa Interactivo USM con Supabase
  // Nunca colocar claves secretas en este archivo
-const SUPABASE_URL = "https://oaedaycrypryegtepkam.supabase.co/rest/v1/";
+const SUPABASE_URL = "https://oaedaycrypryegtepkam.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_f_c7Wku5RwqSqJIIphiQRg_CgwiwP0_";
 async function cargarLugaresRemotos() {
   try {
