@@ -1176,7 +1176,7 @@ function vistaRA(id) {
 
       visor.querySelector(".capa-ra")?.remove();
     }
-
+    };
   window.addEventListener(
     "message", window.usmRAListener
   );
