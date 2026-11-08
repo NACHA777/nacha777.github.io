@@ -1119,13 +1119,6 @@ function vistaRA(id) {
     mostrarCapa(l, true);
   };
   document.getElementById("ra-iniciar").onclick = () => {
-    // Primera prueba: solo el Testamento (ID 2).
-    if (Number(l.id) !== 2) {
-      aviso.textContent =
-        "El reconocimiento de este lugar aún no está configurado.";
-      return;
-    }
-
     visor.classList.remove("guia");
     visor.innerHTML = `
       <iframe
@@ -1139,7 +1132,7 @@ function vistaRA(id) {
       </iframe>
     `;
     aviso.textContent =
-      "Buscando la placa del Testamento...";
+      "Buscando el monumento de " + l.nombre + "...";
     botones.innerHTML = `
       <button class="btn btn-linea" id="ra-parar">
         Detener cámara
@@ -1162,16 +1155,28 @@ function vistaRA(id) {
     if (!frame || evento.source !== frame.contentWindow) {
       return;
     }
-    if (evento.data?.tipo === "USM_RA_ENCONTRADA") {
-      aviso.textContent = "¡Placa reconocida!";
-      mostrarCapa(l, false);
-    }
-    if (evento.data?.tipo === "USM_RA_PERDIDA") {
+    
+    const lugarReconocido =
+      evento.data?.lugar === "plaza" ? lugar(1) :
+      evento.data?.lugar === "testamento" ? lugar(2) :
+      null;
+
+    if (!lugarReconocido) return;
+
+    if (evento.data.tipo === "USM_RA_ENCONTRADA") {
       aviso.textContent =
-        "Placa fuera de cámara. Vuelve a enfocarla.";
+        "¡Reconocido: " + lugarReconocido.nombre + "!";
+
+      mostrarCapa(lugarReconocido, false);
+    }
+
+    if (evento.data.tipo === "USM_RA_PERDIDA") {
+      aviso.textContent =
+        "Monumento fuera de cámara. Vuelve a enfocarlo.";
+
       visor.querySelector(".capa-ra")?.remove();
     }
-  };
+
   window.addEventListener(
     "message", window.usmRAListener
   );
@@ -1257,4 +1262,3 @@ window.addEventListener("resize", () => {
 });
 
 render();
- 
