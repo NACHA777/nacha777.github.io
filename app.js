@@ -208,11 +208,45 @@ function ilustracion(id) {
   return `<svg viewBox="0 0 320 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${s}</svg>`;
 }
 
+
 function fotoLugar(l) {
-  if (l.foto) {
-    return `<div class="foto"><img src="${esc(l.foto)}" alt="${esc(l.nombre)}"></div>`;
+  if (!l.foto) {
+    return `<div class="foto">${ilustracion(l.id)}<span class="marca-foto">Ilustración referencial</span></div>`;
   }
-  return `<div class="foto">${ilustracion(l.id)}<span class="marca-foto">Ilustración referencial</span></div>`;
+  const fotos = [
+    l.foto,
+    ...(Array.isArray(l.galeria) ? l.galeria : [])
+  ];
+  return `
+    <div class="foto">
+      <img
+        src="${esc(l.foto)}"
+        alt="${esc(l.nombre)}"
+        loading="lazy"
+      >
+    </div>
+    ${fotos.length > 1 ? `
+      <details class="galeria-lugar">
+        <summary>Ver fotografías (${fotos.length})</summary>
+        <div class="galeria-grid">
+          ${fotos.map((ruta, i) => `
+            <a
+              href="${esc(ruta)}"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Abrir fotografía ${i + 1} de ${esc(l.nombre)}"
+            >
+              <img
+                src="${esc(ruta)}"
+                alt="${esc(l.nombre)} - fotografía ${i + 1}"
+                loading="lazy"
+              >
+            </a>
+          `).join("")}
+        </div>
+      </details>
+    ` : ""}
+  `;
 }
 
 // ---------- dibujo del mapa del campus ----------

@@ -15,6 +15,10 @@ const lugares = [
     x: 112,
     y: 868,
     foto: "img/plaza.jpg",
+    galeria:[
+      "img/plaza-2.jpeg",
+      "img/plaza-3.jpeg",
+    ],
     desc: "Un lugar para detenerse, encontrarse y recorrer el campus.",
     identidad:
       "Invita a compartir la vida universitaria y a reconocer el nombre que nos reúne como comunidad sansana.",
@@ -39,7 +43,10 @@ const lugares = [
     x: 690,
     y: 812,
     izq: true,
-    foto: "",
+    foto: "img/testamento-1.jpeg",
+    galeria:[
+      "img/testamento-2.jpeg"
+    ],
     desc: "Una parada para acercarse al legado de Federico Santa María.",
     identidad:
       "Propone una mirada al sentido de nuestra comunidad y a la memoria que acompaña la identidad sansana.",
