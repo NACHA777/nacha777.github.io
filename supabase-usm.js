@@ -31,10 +31,22 @@ async function cargarLugaresRemotos() {
     if (!Array.isArray(filas) || filas.length === 0) {
       throw new Error("La tabla lugares está vacía");
     }
-    const nuevos = filas.map(f => ({
-      ...f.datos,
-      id: f.id
-    }));
+    
+    const nuevos = filas.map(f => {
+      const local = lugares.find(
+        lugar => Number(lugar.id) === Number(f.id)
+      );
+
+      const remoto = f.datos || {};
+
+      return {
+        ...(local || {}),
+        ...remoto,
+        id: f.id,
+        foto: local?.foto || remoto.foto || "",
+        galeria: local?.galeria || remoto.galeria || []
+      };
+    });
     lugares.splice(0, lugares.length, ...nuevos);
     console.info(
       `Supabase: ${lugares.length} lugares cargados`
