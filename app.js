@@ -615,9 +615,9 @@ function vistaBloque(resaltar) {
           <h1>Bloque Sansano</h1>
           <p>Encuéntrate, participa y comparte en las próximas convocatorias del campus.</p>
         </div>
-        <a class="btn btn-azul" href="#publicar">${ico("mas")} Publicar convocatoria</a>
+        <a class="btn btn-azul" href="admin.html">${ico("users")} Acceso representantes</a>
       </div>
-      <p class="aviso">${ico("info")} Convocatorias de ejemplo · No corresponden a una agenda real.</p>
+      <p class="aviso">${ico("info")} Las convocatorias oficiales son publicadas por representantes autorizados. Algunas tarjetas pueden ser demostrativas.</p>
       <div class="seccion-cab">
         <h2>Próximas convocatorias</h2>
         <span>${lista.length} ${lista.length == 1 ? "actividad" : "actividades"} · ${mesesUsados.join(", ")}</span>
@@ -638,7 +638,7 @@ function vistaBloque(resaltar) {
             <p class="meta">${fechaLarga(c.fecha)}<br>${esc(c.hora)} h</p>
             <span class="lugar-link">${ico("pin")} ${esc(l ? l.nombre : "")}</span>
             <p class="txt">${esc(c.desc)}</p>
-            <a class="btn btn-linea btn-ancho" href="#lugar-${c.lugar}">${ico("pin")} Ver en el mapa</a>
+            <a class="btn btn-linea btn-ancho" href="${l ? `#lugar-${c.lugar}` : "#mapa"}">${ico("pin")} ${l ? "Ver en el mapa" : "Ver mapa"}</a>
           </article>`;
           })
           .join("")}
@@ -735,292 +735,7 @@ function limpiarErrores(form) {
   form.querySelectorAll(".msj-error").forEach((e) => e.remove());
 }
 
-function vistaPublicar() {
-  app.innerHTML = `
-    <section class="pagina">
-      <a class="volver" href="#bloque">${ico("atras")} Volver a Bloque Sansano</a>
-      <div class="pag-cab"><div>
-        <span class="etiqueta">Bloque Sansano</span>
-        <h1>Publicar convocatoria</h1>
-        <p>Invita a la comunidad a participar. Completa los datos de tu actividad.</p>
-      </div></div>
-      <div class="form-grid">
-        <form class="form" id="f-conv" novalidate>
-          <div class="campo" data-campo="titulo">
-            <label for="c-titulo">Nombre</label>
-            <input type="text" id="c-titulo" maxlength="80" placeholder="Escribe el nombre de la actividad">
-          </div>
-          <div class="campo" data-campo="desc">
-            <label for="c-desc">Descripción</label>
-            <textarea id="c-desc" maxlength="300" placeholder="Cuenta de qué se trata y a quién está dirigida."></textarea>
-          </div>
-          <div class="dos">
-            <div class="campo" data-campo="fecha"><label for="c-fecha">Fecha</label><input type="date" id="c-fecha"></div>
-            <div class="campo" data-campo="hora"><label for="c-hora">Hora</label><input type="time" id="c-hora"></div>
-          </div>
-          <div class="campo" data-campo="lugar">
-            <span class="lbl">Lugar</span>
-            <span class="ayuda">Selecciona un lugar del campus.</span>
-            ${opcionesLugar("c-lugar")}
-          </div>
-          <div class="campo" data-campo="img">
-            <span class="lbl">Imagen</span>
-            <div class="subir" id="zona">
-              ${ico("imagen")}
-              <span>${esMovil() ? "Agrega una imagen de la actividad" : "Arrastra una imagen o selecciónala desde tu dispositivo"}</span>
-              <label class="btn btn-linea btn-chico" for="c-img">Seleccionar imagen</label>
-              <input type="file" id="c-img" accept="image/png, image/jpeg" hidden>
-              <small>JPG o PNG · Máximo 5 MB</small>
-            </div>
-            <div class="previa" id="previa" hidden></div>
-          </div>
-          <div class="form-pie">
-            <button class="btn btn-azul" type="submit">Publicar convocatoria</button>
-            <a class="btn btn-linea" href="#bloque">Cancelar</a>
-          </div>
-          <p class="demo">Tu convocatoria se publicará automáticamente y estará disponible para toda la comunidad.</p>
-        </form>
-        <aside class="lado">
-          ${ico("megafono")}
-          <h3>Una invitación clara nos reúne</h3>
-          <p>Usa un nombre breve, explica la actividad y revisa la fecha y la hora antes de publicar.</p>
-          <hr>
-          <p>Elige uno de los lugares del campus para que la convocatoria pueda ubicarse en el mapa.</p>
-        </aside>
-      </div>
-    </section>`;
-
-  const form = document.getElementById("f-conv");
-  let img = "";
-
-  // imagen: botón o arrastrar
-  const zona = document.getElementById("zona");
-  const previa = document.getElementById("previa");
-  function leer(archivo) {
-    limpiarErrores(form);
-    if (!archivo) return;
-    if (!/image\/(png|jpeg)/.test(archivo.type))
-      return marcarError(form, "img", "La imagen debe ser JPG o PNG.");
-    if (archivo.size > 5 * 1024 * 1024)
-      return marcarError(
-        form,
-        "img",
-        "La imagen pesa más de 5 MB. Prueba con una más liviana.",
-      );
-    const r = new FileReader();
-    r.onload = () => {
-      img = r.result;
-      zona.hidden = true;
-      previa.hidden = false;
-      previa.innerHTML = `<img src="${img}" alt="Vista previa"><button type="button" class="btn btn-linea btn-chico">Quitar</button>`;
-      previa.querySelector("button").onclick = () => {
-        img = "";
-        previa.hidden = true;
-        zona.hidden = false;
-      };
-    };
-    r.readAsDataURL(archivo);
-  }
-  document.getElementById("c-img").onchange = (e) => leer(e.target.files[0]);
-  zona.ondragover = (e) => {
-    e.preventDefault();
-    zona.classList.add("encima");
-  };
-  zona.ondragleave = () => zona.classList.remove("encima");
-  zona.ondrop = (e) => {
-    e.preventDefault();
-    zona.classList.remove("encima");
-    leer(e.dataTransfer.files[0]);
-  };
-
-  form.onsubmit = async (e) => {
-    e.preventDefault();
-    limpiarErrores(form);
-    const d = {
-      titulo: form.querySelector("#c-titulo").value.trim(),
-      desc: form.querySelector("#c-desc").value.trim(),
-      fecha: form.querySelector("#c-fecha").value,
-      hora: form.querySelector("#c-hora").value,
-      lugar: (form.querySelector("[name=c-lugar]:checked") || {}).value,
-    };
-    let ok = true;
-    if (!d.titulo) {
-      marcarError(form, "titulo", "Escribe el nombre de la actividad.");
-      ok = false;
-    }
-    if (!d.desc) {
-      marcarError(form, "desc", "Agrega una descripción breve.");
-      ok = false;
-    }
-    if (!d.fecha) {
-      marcarError(form, "fecha", "Elige una fecha.");
-      ok = false;
-    }
-    if (!d.hora) {
-      marcarError(form, "hora", "Elige una hora.");
-      ok = false;
-    }
-    if (!d.lugar) {
-      marcarError(form, "lugar", "Selecciona dónde será la actividad.");
-      ok = false;
-    }
-    if (!ok) {
-      form
-        .querySelector(".error input, .error textarea, .error .opciones")
-        ?.scrollIntoView({ block: "center" });
-      return;
-    }
-
-    const nueva = {
-      ...d,
-      lugar: Number(d.lugar)
-    };
-    const boton = form.querySelector('[type="submit"]');
-    try {
-      if (boton) boton.disabled = true;
-      const datos = {
-        titulo: nueva.titulo,
-        fecha: nueva.fecha,
-        hora: nueva.hora,
-        lugar_id: Number(nueva.lugar),
-        descripcion: nueva.desc
-      };
-      console.log("Enviando convocatoria:", datos);
-      await USM_COMUNIDAD.enviar(
-        "convocatorias",
-        datos
-      );
-      console.log("Convocatoria guardada en Supabase");
-      aviso("¡Convocatoria publicada!");
-      await USM_COMUNIDAD.cargar();
-      location.hash = "bloque";
-    } catch (error) {
-      console.error(
-        "Error al publicar convocatoria:",
-        error
-      );
-      aviso("No se pudo publicar la convocatoria");
-    } finally {
-      if (boton && boton.isConnected) {
-        boton.disabled = false;
-      }
-    }
-  };
-}
-
-function vistaCompartir(lugarId) {
-  app.innerHTML = `
-    <section class="pagina">
-      <a class="volver" href="#comunidad">${ico("atras")} Volver a Comunidad</a>
-      <div class="pag-cab"><div>
-        <span class="etiqueta">Comunidad</span>
-        <h1>Compartir experiencia</h1>
-        <p>Cuenta una vivencia o una opinión sobre un lugar del campus.</p>
-      </div></div>
-      <div class="form-grid">
-        <form class="form" id="f-exp" novalidate>
-          <div class="campo" data-campo="cat">
-            <span class="lbl">Tipo de experiencia</span>
-            <div class="chips-radio">
-              <label><input type="radio" name="e-cat" value="users" checked>${ico("users")} Encuentro</label>
-              <label><input type="radio" name="e-cat" value="coffee">${ico("coffee")} Pausa</label>
-              <label><input type="radio" name="e-cat" value="music">${ico("music")} Cultura universitaria</label>
-            </div>
-          </div>
-          <div class="campo" data-campo="titulo">
-            <label for="e-titulo">Título</label>
-            <input type="text" id="e-titulo" maxlength="70" placeholder="Ej: Mi lugar favorito entre clases">
-          </div>
-          <div class="campo" data-campo="texto">
-            <label for="e-texto">Tu experiencia</label>
-            <textarea id="e-texto" maxlength="400" placeholder="¿Qué te pasa en este lugar? ¿Qué te gustaría que tuviera?"></textarea>
-            <span class="ayuda" id="e-cont">0 / 400</span>
-          </div>
-          <div class="campo" data-campo="lugar">
-            <span class="lbl">Lugar</span>
-            ${opcionesLugar("e-lugar", lugarId)}
-          </div>
-          <div class="form-pie">
-            <button class="btn btn-azul" type="submit">Compartir experiencia</button>
-            <a class="btn btn-linea" href="#comunidad">Cancelar</a>
-          </div>
-          <p class="demo">Formulario de demostración. La experiencia solo se guarda en este navegador.</p>
-        </form>
-        <aside class="lado">
-          ${ico("mensaje")}
-          <h3>Cada lugar tiene algo que contar</h3>
-          <p>Comparte una vivencia o una opinión con respeto por la comunidad.</p>
-          <hr>
-          <p>Las experiencias ayudan a decidir qué lugares sumar al recorrido.</p>
-        </aside>
-      </div>
-    </section>`;
-
-  const form = document.getElementById("f-exp");
-  const txt = form.querySelector("#e-texto");
-  txt.oninput = () =>
-    (document.getElementById("e-cont").textContent =
-      txt.value.length + " / 400");
-
-  form.onsubmit = async (e) => {
-    e.preventDefault();
-    limpiarErrores(form);
-    const icono = form.querySelector("[name=e-cat]:checked").value;
-    const cats = {
-      users: "Encuentro",
-      coffee: "Pausa",
-      music: "Cultura universitaria",
-    };
-    const d = {
-      titulo: form.querySelector("#e-titulo").value.trim(),
-      texto: txt.value.trim(),
-      lugar: (form.querySelector("[name=e-lugar]:checked") || {}).value,
-    };
-    let ok = true;
-    if (!d.titulo) {
-      marcarError(form, "titulo", "Ponle un título a tu experiencia.");
-      ok = false;
-    }
-    if (!d.texto) {
-      marcarError(form, "texto", "Cuéntanos tu experiencia.");
-      ok = false;
-    }
-    if (!d.lugar) {
-      marcarError(form, "lugar", "Selecciona un lugar.");
-      ok = false;
-    }
-    if (!ok) return;
-
-    const nueva = {
-      ...d,
-      lugar: Number(d.lugar),
-      icono,
-      cat: cats[icono],
-      id: "me" + Date.now(),
-      propia: true,
-    };
-    try {
-      const boton = form.querySelector('[type="submit"]');
-      if (boton) boton.disabled = true;
-      await USM_COMUNIDAD.enviar("experiencias", {
-        titulo: nueva.titulo,
-        texto: nueva.texto,
-        categoria: nueva.cat,
-        lugar_id: Number(nueva.lugar)
-      });
-
-      aviso("¡Experiencia publicada!");
-      await USM_COMUNIDAD.cargar();
-      location.hash = "comunidad";
-
-    } catch (error) {
-      console.error(error);
-      aviso("No se pudo publicar la experiencia");
-      const boton = form.querySelector('[type="submit"]');
-      if (boton) boton.disabled = false;
-    }
-  };
-}
+// La publicación de convocatorias se realiza únicamente en admin.html.
 
 // ---------- vista: realidad aumentada ----------
 let stream = null;
@@ -1217,7 +932,7 @@ function render() {
   window.scrollTo(0, 0);
   if (nom == "bloque") vistaBloque(param);
   else if (nom == "comunidad") vistaComunidad(param);
-  else if (nom == "publicar") vistaPublicar();
+  else if (nom == "publicar") location.href = "admin.html";
   else if (nom == "compartir") vistaCompartir(param);
   else if (nom == "ra") vistaRA(param);
   else {

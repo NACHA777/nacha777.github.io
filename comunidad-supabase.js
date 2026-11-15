@@ -16,7 +16,7 @@ const USM_COMUNIDAD = {
     return respuesta.json();
   },
   async enviar(tabla, datos) {
-    if (!["convocatorias", "experiencias"].includes(tabla)) {
+    if (tabla !== "experiencias") {
       throw new Error("Tabla no permitida");
     }
     const respuesta = await fetch(
@@ -52,7 +52,8 @@ const USM_COMUNIDAD = {
         fecha: f.fecha,
         hora: f.hora,
         lugar: f.lugar_id,
-        propia: false
+        propia: false,
+        img: f.imagen_url || ""
       }));
       misExps = exps.map(f => ({
         id: f.id,
