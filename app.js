@@ -72,6 +72,21 @@ function fechaLarga(f) {
   const p = partes(f);
   return `${p.d} de ${meses[p.m - 1]} de ${p.a}`;
 }
+// "12:00:00" -> "12:00" (Supabase guarda la hora con segundos)
+function horaCorta(h) {
+  return String(h || "").slice(0, 5);
+}
+// fecha y hora con el mismo formato en todo el sitio: "17 de noviembre de 2026 · 12:00"
+function fechaHora(f, h) {
+  return fechaLarga(f) + (h ? " · " + horaCorta(h) : "");
+}
+function iconoCat(x) {
+  return (
+    x.icono ||
+    { Encuentro: "users", Pausa: "coffee", "Cultura universitaria": "music" }[x.cat] ||
+    "mensaje"
+  );
+}
 function lugar(id) {
   return lugares.find((l) => l.id == id);
 }
@@ -487,9 +502,9 @@ function htmlFicha(l) {
   if (conv) {
     cajaConv = `
       <div class="caja">
-        <div class="caja-cab"><span class="etiqueta">Próxima convocatoria</span><span class="chip">${conv.propia ? "Tuya" : "Ejemplo"}</span></div>
+        <div class="caja-cab"><span class="etiqueta">Próxima convocatoria</span><span class="chip ${conv.propia ? "" : "chip-azul"}">${conv.propia ? "Tuya" : "Oficial"}</span></div>
         <h3>${esc(conv.titulo)}</h3>
-        <p class="meta">${fechaLarga(conv.fecha)} · ${esc(conv.hora)}</p>
+        <p class="meta">${esc(fechaHora(conv.fecha, conv.hora))}</p>
         <p class="txt">${esc(conv.desc)}</p>
         <a class="btn btn-azul btn-ancho btn-chico" href="#bloque-${conv.id}">Ver convocatoria ${ico("flecha")}</a>
       </div>`;
@@ -616,11 +631,12 @@ function vistaBloque(resaltar) {
           <p>Encuéntrate, participa y comparte en las próximas convocatorias del campus.</p>
         </div>
       </div>
-      <p class="aviso">${ico("info")} Las convocatorias oficiales son publicadas por representantes autorizados. Algunas tarjetas pueden ser demostrativas.</p>
+      <p class="aviso">${ico("info")} Las convocatorias son publicadas por representantes autorizados del Bloque Sansano.</p>
       <div class="seccion-cab">
         <h2>Próximas convocatorias</h2>
-        <span>${lista.length} ${lista.length == 1 ? "actividad" : "actividades"} · ${mesesUsados.join(", ")}</span>
+        <span>${lista.length} ${lista.length == 1 ? "actividad" : "actividades"}${mesesUsados.length ? " · " + mesesUsados.join(", ") : ""}</span>
       </div>
+      ${lista.length ? "" : `<div class="vacio">Aún no hay convocatorias publicadas. Vuelve pronto.</div>`}
       <div class="grilla">
         ${lista
           .map((c) => {
@@ -630,11 +646,11 @@ function vistaBloque(resaltar) {
           <article class="tarjeta" id="${c.id}">
             <div class="tar-cab">
               <span class="dia"><b>${p.d}</b><small>${meses[p.m - 1].slice(0, 3).toUpperCase()} ${p.a}</small></span>
-              <span class="chip ${c.propia ? "chip-azul" : ""}">${c.propia ? "Tuya" : "Ejemplo"}</span>
+              <span class="chip ${c.propia ? "" : "chip-azul"}">${c.propia ? "Tuya" : "Oficial"}</span>
             </div>
             ${c.img ? `<img class="img-conv" src="${c.img}" alt="">` : ""}
             <h3>${esc(c.titulo)}</h3>
-            <p class="meta">${fechaLarga(c.fecha)}<br>${esc(c.hora)} h</p>
+            <p class="meta">${esc(fechaHora(c.fecha, c.hora))}</p>
             <span class="lugar-link">${ico("pin")} ${esc(l ? l.nombre : "")}</span>
             <p class="txt">${esc(c.desc)}</p>
             <a class="btn btn-linea btn-ancho" href="${l ? `#lugar-${c.lugar}` : "#mapa"}">${ico("pin")} ${l ? "Ver en el mapa" : "Ver mapa"}</a>
@@ -661,23 +677,24 @@ function vistaComunidad(resaltar) {
         </div>
         <a class="btn btn-azul" href="#compartir">${ico("mensaje")} Compartir experiencia</a>
       </div>
-      <p class="aviso">${ico("info")} Experiencias de ejemplo · No son testimonios reales.</p>
+      <p class="aviso">${ico("info")} Experiencias compartidas por la comunidad sansana.</p>
       <div class="seccion-cab">
         <h2>Voces de la vida universitaria</h2>
-        <span>${experienciasEjemplo.length} experiencias de ejemplo${misExps.length ? ` · ${misExps.length} tuya${misExps.length > 1 ? "s" : ""}` : ""}</span>
+        <span>${lista.length} ${lista.length == 1 ? "experiencia" : "experiencias"}</span>
       </div>
+      ${lista.length ? "" : `<div class="vacio">Todavía no hay experiencias. ¡Sé la primera persona en compartir una!</div>`}
       <div class="grilla">
         ${lista
           .map((x) => {
             const l = lugar(x.lugar);
             return `
           <article class="tarjeta" id="${x.id}">
-            <div class="cat"><span class="ico-caja">${ico(x.icono)}</span><span class="etiqueta">${esc(x.cat)}</span></div>
+            <div class="cat"><span class="ico-caja">${ico(iconoCat(x))}</span><span class="etiqueta">${esc(x.cat)}</span></div>
             <h3>${esc(x.titulo)}</h3>
             <p class="txt">${esc(x.texto)}</p>
             <hr>
             <a class="lugar-link" href="#lugar-${x.lugar}">${ico("pin")} ${esc(l ? l.nombre : "")}</a>
-            <span class="pie">${x.propia ? "Compartida por ti" : "Experiencia de ejemplo"}</span>
+            <span class="pie">${x.propia ? "Compartida por ti" : "Compartida por la comunidad"}</span>
             <a class="btn btn-linea btn-ancho" href="#compartir-${x.lugar}">Compartir experiencia</a>
           </article>`;
           })

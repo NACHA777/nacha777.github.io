@@ -42,7 +42,6 @@ const lugares = [
     tema: "Memoria",
     x: 690,
     y: 812,
-    izq: true,
     foto: "img/testamento-1.jpeg",
     galeria:[
       "img/testamento-2.jpeg"
@@ -99,61 +98,9 @@ const lugares = [
   },
 ];
 
+// Las convocatorias y experiencias reales vienen de Supabase (ver comunidad-supabase.js).
+// Estas listas quedan vacías: si se agregan elementos aquí, aparecerán junto a los reales.
 // fecha en formato año-mes-día, hora en 24 h
-const convocatoriasEjemplo = [
-  {
-    id: "c1",
-    titulo: "Encuentro sansano",
-    fecha: "2026-10-20",
-    hora: "13:00",
-    lugar: 1,
-    desc: "Una pausa para conocer estudiantes y compartir la vida del campus.",
-  },
-  {
-    id: "c2",
-    titulo: "Conversaciones en el Cerrito",
-    fecha: "2026-10-22",
-    hora: "12:30",
-    lugar: 3,
-    desc: "Comparte ideas y experiencias sobre la vida universitaria al aire libre.",
-  },
-  {
-    id: "c3",
-    titulo: "Encuentro de cultura universitaria",
-    fecha: "2026-10-23",
-    hora: "18:00",
-    lugar: 4,
-    desc: "Un encuentro para compartir propuestas culturales de la comunidad sansana.",
-  },
-];
-
+const convocatoriasEjemplo = [];
 // icono: users, coffee o music
-const experienciasEjemplo = [
-  {
-    id: "e1",
-    cat: "Encuentro",
-    icono: "users",
-    titulo: "Un punto para encontrarnos",
-    texto:
-      "La plaza invita a conversar entre clases y conocer a otros estudiantes. Un encuentro breve puede hacer más cercana la vida en el campus.",
-    lugar: 1,
-  },
-  {
-    id: "e2",
-    cat: "Pausa",
-    icono: "coffee",
-    titulo: "Una pausa al aire libre",
-    texto:
-      "Detenerse en el Cerrito permite despejarse y compartir un momento tranquilo. También es un buen espacio para conversar sobre el día universitario.",
-    lugar: 3,
-  },
-  {
-    id: "e3",
-    cat: "Cultura universitaria",
-    icono: "music",
-    titulo: "La cultura también nos reúne",
-    texto:
-      "El Aula Magna inspira encuentros en torno a la cultura. Compartir propuestas y opiniones ayuda a imaginar una vida universitaria más participativa.",
-    lugar: 4,
-  },
-];
+const experienciasEjemplo = [];

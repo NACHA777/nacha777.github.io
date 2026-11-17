@@ -43,6 +43,8 @@ async function cargarLugaresRemotos() {
         ...(local || {}),
         ...remoto,
         id: f.id,
+        // la posición en el mapa siempre se toma de datos.js
+        ...(local ? { x: local.x, y: local.y, izq: local.izq } : {}),
         foto: local?.foto || remoto.foto || "",
         galeria: local?.galeria || remoto.galeria || []
       };
