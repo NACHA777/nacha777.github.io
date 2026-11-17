@@ -753,6 +753,121 @@ function limpiarErrores(form) {
 
 // La publicación de convocatorias se realiza únicamente en admin.html.
 
+// ---------- vista: compartir experiencia (se guarda en Supabase) ----------
+function vistaCompartir(lugarId) {
+  app.innerHTML = `
+    <section class="pagina">
+      <a class="volver" href="#comunidad">${ico("atras")} Volver a Comunidad</a>
+      <div class="pag-cab"><div>
+        <span class="etiqueta">Comunidad</span>
+        <h1>Compartir experiencia</h1>
+        <p>Cuenta una vivencia o una opinión sobre un lugar del campus.</p>
+      </div></div>
+      <div class="form-grid">
+        <form class="form" id="f-exp" novalidate>
+          <div class="campo" data-campo="cat">
+            <span class="lbl">Tipo de experiencia</span>
+            <div class="chips-radio">
+              <label><input type="radio" name="e-cat" value="users" checked>${ico("users")} Encuentro</label>
+              <label><input type="radio" name="e-cat" value="coffee">${ico("coffee")} Pausa</label>
+              <label><input type="radio" name="e-cat" value="music">${ico("music")} Cultura universitaria</label>
+            </div>
+          </div>
+          <div class="campo" data-campo="titulo">
+            <label for="e-titulo">Título</label>
+            <input type="text" id="e-titulo" maxlength="70" placeholder="Ej: Mi lugar favorito entre clases">
+          </div>
+          <div class="campo" data-campo="texto">
+            <label for="e-texto">Tu experiencia</label>
+            <textarea id="e-texto" maxlength="400" placeholder="¿Qué te pasa en este lugar? ¿Qué te gustaría que tuviera?"></textarea>
+            <span class="ayuda" id="e-cont">0 / 400</span>
+          </div>
+          <div class="campo" data-campo="lugar">
+            <span class="lbl">Lugar</span>
+            ${opcionesLugar("e-lugar", lugarId)}
+          </div>
+          <div class="form-pie">
+            <button class="btn btn-azul" type="submit">Compartir experiencia</button>
+            <a class="btn btn-linea" href="#comunidad">Cancelar</a>
+          </div>
+          <p class="demo">Tu experiencia se publicará en Comunidad para que otras personas la lean.</p>
+        </form>
+        <aside class="lado">
+          ${ico("mensaje")}
+          <h3>Cada lugar tiene algo que contar</h3>
+          <p>Comparte una vivencia o una opinión con respeto por la comunidad.</p>
+          <hr>
+          <p>Las experiencias ayudan a decidir qué lugares sumar al recorrido.</p>
+        </aside>
+      </div>
+    </section>`;
+
+  const form = document.getElementById("f-exp");
+  const txt = form.querySelector("#e-texto");
+  txt.oninput = () =>
+    (document.getElementById("e-cont").textContent =
+      txt.value.length + " / 400");
+
+  form.onsubmit = async (e) => {
+    e.preventDefault();
+    limpiarErrores(form);
+    const icono = form.querySelector("[name=e-cat]:checked").value;
+    const cats = {
+      users: "Encuentro",
+      coffee: "Pausa",
+      music: "Cultura universitaria",
+    };
+    const d = {
+      titulo: form.querySelector("#e-titulo").value.trim(),
+      texto: txt.value.trim(),
+      lugar: (form.querySelector("[name=e-lugar]:checked") || {}).value,
+    };
+    let ok = true;
+    if (!d.titulo) {
+      marcarError(form, "titulo", "Ponle un título a tu experiencia.");
+      ok = false;
+    }
+    if (!d.texto) {
+      marcarError(form, "texto", "Cuéntanos tu experiencia.");
+      ok = false;
+    }
+    if (!d.lugar) {
+      marcarError(form, "lugar", "Selecciona un lugar.");
+      ok = false;
+    }
+    if (!ok) return;
+
+    const nueva = {
+      ...d,
+      lugar: Number(d.lugar),
+      icono,
+      cat: cats[icono],
+      id: "me" + Date.now(),
+      propia: true,
+    };
+    try {
+      const boton = form.querySelector('[type="submit"]');
+      if (boton) boton.disabled = true;
+      await USM_COMUNIDAD.enviar("experiencias", {
+        titulo: nueva.titulo,
+        texto: nueva.texto,
+        categoria: nueva.cat,
+        lugar_id: Number(nueva.lugar)
+      });
+
+      aviso("¡Experiencia publicada!");
+      await USM_COMUNIDAD.cargar();
+      location.hash = "comunidad";
+
+    } catch (error) {
+      console.error(error);
+      aviso("No se pudo publicar la experiencia");
+      const boton = form.querySelector('[type="submit"]');
+      if (boton) boton.disabled = false;
+    }
+  };
+}
+
 // ---------- vista: realidad aumentada ----------
 let stream = null;
 
