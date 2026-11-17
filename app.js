@@ -1,6 +1,6 @@
 // Campus San Joaquín · app del mapa interactivo
 // HTML/CSS/JS sin librerías. Las vistas se eligen con el # de la URL:
-// #mapa, #lugar-2, #bloque, #comunidad, #publicar, #compartir, #ra-1
+// #inicio, #mapa, #lugar-2, #bloque, #comunidad, #publicar, #compartir, #ra-1
 
 const app = document.getElementById("app");
 
@@ -897,16 +897,100 @@ function vistaRA(id) {
   );
 }
 
+// ---------- vista: Inicio (página principal) ----------
+function vistaInicio() {
+  const conRA = lugares.filter((l) => l.ra);
+  app.innerHTML = `
+    <section class="hero">
+      <img class="hero-img" src="img/plaza.jpg" alt="">
+      <div class="hero-in">
+        <span class="etiqueta">Bienvenida · Comunidad sansana</span>
+        <h1>Descubre el Campus San Joaquín</h1>
+        <p>Recorre los lugares que cuentan la historia y la identidad de la Universidad Técnica Federico Santa María.</p>
+        <div class="hero-botones">
+          <a class="btn btn-blanco" href="#mapa">${ico("brujula")} Explorar el mapa</a>
+          <a class="btn btn-transp" href="#bloque">${ico("users")} Ver actividades</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="pagina inicio">
+      <div class="seccion-cab">
+        <h2>¿Qué puedes hacer?</h2>
+      </div>
+      <div class="grilla">
+        <a class="tarjeta tarjeta-link" href="#mapa">
+          <div class="cat"><span class="ico-caja">${ico("pin")}</span><span class="etiqueta">Mapa interactivo</span></div>
+          <h3>Recorre el campus</h3>
+          <p class="txt">Explora las paradas del recorrido y conoce la historia de cada lugar.</p>
+          <span class="lugar-link">Ir al mapa ${ico("flecha")}</span>
+        </a>
+        <a class="tarjeta tarjeta-link" href="#ra-${conRA[0] ? conRA[0].id : 1}">
+          <div class="cat"><span class="ico-caja">${ico("scan")}</span><span class="etiqueta">Realidad aumentada</span></div>
+          <h3>Apunta tu cámara</h3>
+          <p class="txt">Enfoca ${conRA.map((l) => esc(l.corto)).join(" o el ")} y descubre su contenido.</p>
+          <span class="lugar-link">Probar RA ${ico("flecha")}</span>
+        </a>
+        <a class="tarjeta tarjeta-link" href="#bloque">
+          <div class="cat"><span class="ico-caja">${ico("megafono")}</span><span class="etiqueta">Bloque Sansano</span></div>
+          <h3>Participa</h3>
+          <p class="txt">Revisa las próximas convocatorias y actividades del campus.</p>
+          <span class="lugar-link">Ver convocatorias ${ico("flecha")}</span>
+        </a>
+        <a class="tarjeta tarjeta-link" href="#comunidad">
+          <div class="cat"><span class="ico-caja">${ico("mensaje")}</span><span class="etiqueta">Comunidad</span></div>
+          <h3>Comparte</h3>
+          <p class="txt">Lee y cuenta experiencias de la vida universitaria en San Joaquín.</p>
+          <span class="lugar-link">Ver comunidad ${ico("flecha")}</span>
+        </a>
+      </div>
+
+      <div class="seccion-cab">
+        <h2>Paradas del recorrido</h2>
+        <span>${lugares.length} lugares</span>
+      </div>
+      <div class="paradas">
+        ${lugares
+          .map(
+            (l, i) => `
+          <a class="parada" href="#lugar-${l.id}">
+            <span class="parada-num">${i + 1}</span>
+            <span class="parada-txt">
+              <b>${esc(l.nombre)}</b>
+              <small>${esc(l.desc)}</small>
+            </span>
+            <span class="parada-chips">
+              <span class="chip">${esc(l.tema)}</span>
+              ${l.ra ? `<span class="chip chip-azul">RA</span>` : ""}
+            </span>
+          </a>`,
+          )
+          .join("")}
+      </div>
+
+      <div class="franja lema">
+        <div>
+          <h3>«Ex umbra in solem»</h3>
+          <p>De la sombra a la luz: el conocimiento como la luz que guía el desarrollo de la sociedad.</p>
+        </div>
+        <a class="btn btn-azul" href="#mapa">Comenzar recorrido ${ico("flecha")}</a>
+      </div>
+
+      <footer class="pie-pag"><span>Campus San Joaquín · USM</span><span>Mapa interactivo · Bloque Sansano</span></footer>
+    </section>`;
+}
+
 // ---------- navegación ----------
 let vistaActual = "";
 
 function render() {
-  const h = decodeURIComponent(location.hash.slice(1)) || "mapa";
+  const h = decodeURIComponent(location.hash.slice(1)) || "inicio";
   const [nom, param] = [h.split("-")[0], h.split("-").slice(1).join("-")];
   apagarCamara();
 
   const tab =
     {
+      inicio: "inicio",
       mapa: "mapa",
       lugar: "mapa",
       ra: "mapa",
@@ -930,7 +1014,8 @@ function render() {
   }
   vistaActual = nom;
   window.scrollTo(0, 0);
-  if (nom == "bloque") vistaBloque(param);
+  if (nom == "inicio") vistaInicio();
+  else if (nom == "bloque") vistaBloque(param);
   else if (nom == "comunidad") vistaComunidad(param);
   else if (nom == "publicar") location.href = "admin.html";
   else if (nom == "compartir") vistaCompartir(param);
