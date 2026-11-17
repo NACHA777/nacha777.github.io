@@ -630,3 +630,11 @@ a.lugar-link:hover { text-decoration: underline; }
   .tabs::-webkit-scrollbar { display: none; }
   .tabs a { flex: 1 0 auto; padding: 9px 10px; }
 }
+
+/* link discreto para representantes (al pie de las páginas públicas) */
+.link-rep {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--tinta-2); font-weight: 600; text-decoration: none;
+}
+.link-rep:hover { color: var(--azul); text-decoration: underline; }
+.link-rep .ico { width: 15px; height: 15px; }

@@ -615,7 +615,6 @@ function vistaBloque(resaltar) {
           <h1>Bloque Sansano</h1>
           <p>Encuéntrate, participa y comparte en las próximas convocatorias del campus.</p>
         </div>
-        <a class="btn btn-azul" href="admin.html">${ico("users")} Acceso representantes</a>
       </div>
       <p class="aviso">${ico("info")} Las convocatorias oficiales son publicadas por representantes autorizados. Algunas tarjetas pueden ser demostrativas.</p>
       <div class="seccion-cab">
@@ -643,7 +642,7 @@ function vistaBloque(resaltar) {
           })
           .join("")}
       </div>
-      <footer class="pie-pag"><span>Campus San Joaquín · USM</span><span>Vida universitaria</span></footer>
+      <footer class="pie-pag"><span>Campus San Joaquín · USM</span><a class="link-rep" href="admin.html">${ico("users")} ¿Eres representante? Ingresa aquí</a></footer>
     </section>`;
   marcar(resaltar);
 }
@@ -688,7 +687,7 @@ function vistaComunidad(resaltar) {
         <div><h3>Cada lugar tiene algo que contar</h3><p>Comparte una vivencia o una opinión con respeto por la comunidad.</p></div>
         <b>Encuentro · Pausa · Cultura</b>
       </div>
-      <footer class="pie-pag"><span>Campus San Joaquín · USM</span><span>Vida universitaria</span></footer>
+      <footer class="pie-pag"><span>Campus San Joaquín · USM</span><a class="link-rep" href="admin.html">${ico("users")} ¿Eres representante? Ingresa aquí</a></footer>
     </section>`;
   marcar(resaltar);
 }
@@ -976,7 +975,7 @@ function vistaInicio() {
         <a class="btn btn-azul" href="#mapa">Comenzar recorrido ${ico("flecha")}</a>
       </div>
 
-      <footer class="pie-pag"><span>Campus San Joaquín · USM</span><span>Mapa interactivo · Bloque Sansano</span></footer>
+      <footer class="pie-pag"><span>Campus San Joaquín · USM</span><a class="link-rep" href="admin.html">${ico("users")} ¿Eres representante? Ingresa aquí</a></footer>
     </section>`;
 }
 
