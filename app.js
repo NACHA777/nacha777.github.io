@@ -1,6 +1,6 @@
 // Campus San Joaquín · app del mapa interactivo
 // HTML/CSS/JS sin librerías. Las vistas se eligen con el # de la URL:
-// #inicio, #mapa, #lugar-2, #bloque, #comunidad, #publicar, #compartir, #ra-1
+// #inicio, #mapa, #lugar-2, #organizacion, #bloque, #comunidad, #publicar, #compartir, #ra-1
 
 const app = document.getElementById("app");
 
@@ -608,6 +608,116 @@ function abrirFicha(id) {
   else centrar(l.x, l.y, 0.62, 0.5);
 }
 
+// ---------- vista: conoce Bloque Sansano ----------
+// Los espacios provisionales se completarán solo con información oficial validada.
+function vistaOrganizacion() {
+  const fotoPendiente = (nombre) => `
+    <div class="org-foto" role="img" aria-label="Fotografía pendiente: ${nombre}">
+      ${ico("imagen")}
+      <b>Fotografía oficial pendiente</b>
+      <small>${nombre}</small>
+    </div>`;
+
+  app.innerHTML = `
+    <section class="org-pagina">
+      <a class="volver" href="#inicio">${ico("atras")} Volver al inicio</a>
+
+      <header class="org-hero">
+        <div>
+          <span class="etiqueta">Vida en el campus</span>
+          <h1>Conoce Bloque Sansano</h1>
+          <p>Un espacio para conocer a la agrupación, su historia y su participación en la comunidad universitaria.</p>
+          <p class="org-pendiente">Contenido pendiente de validación oficial</p>
+        </div>
+        ${fotoPendiente("Imagen de la agrupación por proporcionar")}
+      </header>
+
+      <section class="org-seccion" aria-labelledby="org-quienes">
+        <h2 id="org-quienes">¿Quiénes somos?</h2>
+        <div class="org-panel">
+          <span class="etiqueta">Texto provisional</span>
+          <h3>Historia y origen de Bloque Sansano</h3>
+          <p>En este espacio se incorporará la presentación oficial de la agrupación: cómo surgió, cuáles son sus propósitos y cómo se vincula con la comunidad universitaria.</p>
+          <small>Pendiente de información y validación de sus representantes.</small>
+        </div>
+      </section>
+
+      <section class="org-seccion" aria-labelledby="org-mision">
+        <h2 id="org-mision">Misión y objetivos</h2>
+        <div class="org-tarjetas">
+          <article class="org-tarjeta">
+            ${ico("foco")}
+            <h3>Misión</h3>
+            <p>Incorporar aquí la misión oficial de la agrupación.</p>
+          </article>
+          <article class="org-tarjeta">
+            ${ico("pin")}
+            <h3>Objetivos</h3>
+            <p>Incorporar aquí los objetivos definidos por Bloque Sansano.</p>
+          </article>
+          <article class="org-tarjeta">
+            ${ico("users")}
+            <h3>Valores</h3>
+            <p>Incorporar aquí los valores que la agrupación declare.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="org-seccion" aria-labelledby="org-hacemos">
+        <h2 id="org-hacemos">¿Qué hacemos?</h2>
+        <p class="org-intro">Espacios para presentar iniciativas reales de la agrupación, pendientes de validar.</p>
+        <div class="org-iniciativas">
+          ${[1, 2, 3].map((numero) => `
+            <article class="org-iniciativa">
+              ${fotoPendiente(`Imagen de la iniciativa ${numero}`)}
+              <div>
+                <h3>Iniciativa ${numero} · Por completar</h3>
+                <p>Nombre y descripción oficial de una iniciativa realizada por Bloque Sansano.</p>
+              </div>
+            </article>
+          `).join("")}
+        </div>
+      </section>
+
+      <section class="org-seccion" aria-labelledby="org-galeria">
+        <h2 id="org-galeria">Galería</h2>
+        <p class="org-intro">Fotografías de integrantes y actividades · Material oficial por proporcionar.</p>
+        <div class="org-galeria">
+          ${[1, 2, 3, 4, 5, 6].map((numero) => fotoPendiente(`Fotografía ${numero} por proporcionar`)).join("")}
+        </div>
+      </section>
+
+      <section class="org-seccion" aria-labelledby="org-contacto">
+        <h2 id="org-contacto">Redes y contacto</h2>
+        <div class="org-contactos">
+          <article class="org-tarjeta">
+            ${ico("mensaje")}
+            <h3>Instagram</h3>
+            <p>Usuario oficial por confirmar.</p>
+            <small>Sin enlace activo hasta su validación.</small>
+          </article>
+          <article class="org-tarjeta">
+            ${ico("mensaje")}
+            <h3>Otros medios oficiales</h3>
+            <p>Correo o medio de contacto oficial por confirmar.</p>
+            <small>Sin enlace activo hasta su validación.</small>
+          </article>
+        </div>
+      </section>
+
+      <section class="org-cta" aria-labelledby="org-actividades">
+        <div>
+          <span class="etiqueta">Actividades</span>
+          <h2 id="org-actividades">Próximas convocatorias</h2>
+          <p>Consulta las actividades publicadas por los representantes de Bloque Sansano.</p>
+        </div>
+        <a class="btn btn-azul" href="#bloque">Ver próximas convocatorias ${ico("flecha")}</a>
+      </section>
+
+      <footer class="pie-pag"><span>Campus San Joaquín · USM</span><span>Contenido de la agrupación pendiente de validación</span></footer>
+    </section>`;
+}
+
 // ---------- vista: Bloque Sansano ----------
 function vistaBloque(resaltar) {
   const lista = todasConvs();
@@ -623,11 +733,11 @@ function vistaBloque(resaltar) {
   ];
   app.innerHTML = `
     <section class="pagina">
-      <a class="volver" href="#mapa">${ico("atras")} Volver al Mapa</a>
+      <a class="volver" href="#organizacion">${ico("atras")} Conoce Bloque Sansano</a>
       <div class="pag-cab">
         <div>
           <span class="etiqueta">Vida en el campus</span>
-          <h1>Bloque Sansano</h1>
+          <h1>Próximas convocatorias</h1>
           <p>Encuéntrate, participa y comparte en las próximas convocatorias del campus.</p>
         </div>
       </div>
@@ -1040,7 +1150,7 @@ function vistaInicio() {
         <p>Recorre los lugares que cuentan la historia y la identidad de la Universidad Técnica Federico Santa María.</p>
         <div class="hero-botones">
           <a class="btn btn-blanco" href="#mapa">${ico("brujula")} Explorar el mapa</a>
-          <a class="btn btn-transp" href="#bloque">${ico("users")} Ver actividades</a>
+          <a class="btn btn-transp" href="#organizacion">${ico("users")} Conoce Bloque Sansano</a>
         </div>
       </div>
     </section>
@@ -1062,10 +1172,16 @@ function vistaInicio() {
           <p class="txt">Enfoca ${conRA.map((l) => esc(l.corto)).join(" o el ")} y descubre su contenido.</p>
           <span class="lugar-link">Probar RA ${ico("flecha")}</span>
         </a>
+        <a class="tarjeta tarjeta-link" href="#organizacion">
+          <div class="cat"><span class="ico-caja">${ico("users")}</span><span class="etiqueta">Conoce Bloque Sansano</span></div>
+          <h3>Presentación de la agrupación</h3>
+          <p class="txt">Conoce su historia, propósito e iniciativas.</p>
+          <span class="lugar-link">Conocer la agrupación ${ico("flecha")}</span>
+        </a>
         <a class="tarjeta tarjeta-link" href="#bloque">
-          <div class="cat"><span class="ico-caja">${ico("megafono")}</span><span class="etiqueta">Bloque Sansano</span></div>
-          <h3>Participa</h3>
-          <p class="txt">Revisa las próximas convocatorias y actividades del campus.</p>
+          <div class="cat"><span class="ico-caja">${ico("megafono")}</span><span class="etiqueta">Próximas actividades</span></div>
+          <h3>Convocatorias</h3>
+          <p class="txt">Revisa las próximas convocatorias del campus.</p>
           <span class="lugar-link">Ver convocatorias ${ico("flecha")}</span>
         </a>
         <a class="tarjeta tarjeta-link" href="#comunidad">
@@ -1126,6 +1242,7 @@ function render() {
       lugar: "mapa",
       ra: "mapa",
       bloque: "bloque",
+      organizacion: "bloque",
       publicar: "bloque",
       comunidad: "comunidad",
       compartir: "comunidad",
@@ -1147,6 +1264,7 @@ function render() {
   window.scrollTo(0, 0);
   if (nom == "inicio") vistaInicio();
   else if (nom == "bloque") vistaBloque(param);
+  else if (nom == "organizacion") vistaOrganizacion();
   else if (nom == "comunidad") vistaComunidad(param);
   else if (nom == "publicar") location.href = "admin.html";
   else if (nom == "compartir") vistaCompartir(param);
