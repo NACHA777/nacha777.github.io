@@ -1038,7 +1038,8 @@ function mostrarLegadoPlaza(sinCamara = false) {
       const estado = seccion.querySelector(".plaza-legado__eyebrow");
       if (estado) estado.innerHTML = ico("check") + " Monumento reconocido";
     }
-    if (sinCamara) seccion.scrollIntoView({ behavior: "smooth", block: "start" });
+    // La tarjeta RA puede tocarse de nuevo para volver a los capítulos.
+    seccion.scrollIntoView({ behavior: "smooth", block: "start" });
     return;
   }
 
@@ -1206,7 +1207,7 @@ function vistaRA(id) {
     visor.innerHTML = `
       <iframe
         id="ra-frame"
-        src="ra.html"
+        src="ra.html?lugar=${l.id === 1 ? "plaza" : "testamento"}"
         allow="camera"
         title="Cámara de realidad aumentada"
         style="width:100%;height:100%;
@@ -1250,15 +1251,25 @@ function vistaRA(id) {
     if (evento.data.tipo === "USM_RA_ENCONTRADA") {
       aviso.textContent =
         "¡Reconocido: " + lugarReconocido.nombre + "!";
-      if (l.id === 1) mostrarLegadoPlaza(false);
-      else mostrarCapa(lugarReconocido, false);
+      if (l.id === 1) {
+        // La tarjeta 3D permanece en la cámara. El usuario decide cuándo abrir
+        // los capítulos, tocando la tarjeta o el botón accesible inferior.
+        aviso.textContent = "¡Plaza reconocida! Toca la tarjeta flotante para descubrir su legado.";
+      } else {
+        mostrarCapa(lugarReconocido, false);
+      }
+    }
+
+    if (evento.data.tipo === "USM_RA_ABRIR_PLAZA" && l.id === 1) {
+      aviso.textContent = "Explorando el legado de Federico Santa María.";
+      mostrarLegadoPlaza(false);
     }
 
     if (evento.data.tipo === "USM_RA_PERDIDA") {
-      aviso.textContent =
-        "Monumento fuera de cámara. Vuelve a enfocarlo.";
-      // En la Plaza preservamos los capítulos para que se puedan leer
-      // aunque la persona deje de apuntar al monumento.
+      aviso.textContent = document.getElementById("plaza-legado") && l.id === 1
+        ? "Puedes seguir leyendo los capítulos de la Plaza."
+        : "Monumento fuera de cámara. Vuelve a enfocarlo.";
+      // En la Plaza preservamos los capítulos aunque se pierda el seguimiento.
       if (l.id !== 1) visor.querySelector(".capa-ra")?.remove();
     }
     };
