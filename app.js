@@ -1169,7 +1169,7 @@ function vistaRA(id) {
           </span>
           <h1>Reconocimiento de monumentos</h1>
           <p class="lugar-ra">${esc(l.nombre)}</p>
-          <p>${l.id === 1 ? "Apunta tu cámara al monumento de la plaza." : "Apunta tu cámara hacia la placa."}</p>
+          <p>${l.id === 1 ? "Apunta al título TESTAMENTO y a los primeros párrafos de la placa bajo el busto." : "Apunta tu cámara hacia la placa."}</p>
         </div>
       </div>
 
@@ -1207,7 +1207,7 @@ function vistaRA(id) {
     visor.innerHTML = `
       <iframe
         id="ra-frame"
-        src="ra.html?lugar=${l.id === 1 ? "plaza" : "testamento"}"
+        src="${l.id === 1 ? "ra-plaza.html?v=3" : "ra.html?lugar=testamento"}"
         allow="camera"
         title="Cámara de realidad aumentada"
         style="width:100%;height:100%;
