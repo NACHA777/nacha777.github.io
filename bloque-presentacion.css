@@ -1,0 +1,56 @@
+/* NUEVA presentación de Bloque Sansano. Se carga después de estilos.css. */
+.org-pagina { max-width: 1060px; margin: 0 auto; padding: 30px 18px 50px; }
+.org-pagina > .volver { margin-bottom: 32px; }
+.org-hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.9fr); align-items: center; gap: 28px; margin-bottom: 42px; }
+.org-hero h1 { margin: 10px 0 12px; font-size: clamp(32px, 4vw, 44px); line-height: 1.14; }
+.org-hero p { color: var(--tinta-2); max-width: 55ch; }
+.org-hero .org-pendiente { margin-top: 16px; }
+.org-pendiente { display: inline-block; padding: 8px 12px; border-radius: 8px; background: var(--sup-2); color: var(--tinta-2); font-size: 12px; }
+.org-foto { min-width: 0; background: var(--sup-2); min-height: 230px; border: 1px dashed var(--linea); border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; padding: 18px; color: var(--tinta-2); }
+.org-foto .ico { width: 24px; height: 24px; color: var(--azul); }
+.org-foto b { color: var(--azul); font-size: 13px; }
+.org-foto small { font-size: 12px; }
+.org-seccion { margin-top: 34px; }
+.org-seccion h2 { font-size: 21px; margin-bottom: 14px; }
+.org-intro { color: var(--tinta-2); font-size: 14px; margin: 0 0 14px; }
+.org-panel { border-radius: 14px; border: 1px solid var(--linea); background: var(--sup); padding: 22px; }
+.org-panel h3 { font-size: 16px; margin: 9px 0; }
+.org-panel p { color: var(--tinta-2); font-size: 14px; }
+.org-panel small { display: block; color: var(--tinta-2); font-size: 11px; margin-top: 12px; }
+.org-tarjetas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.org-tarjeta { border: 1px solid var(--linea); background: var(--sup); border-radius: 14px; padding: 20px; min-width: 0; }
+.org-tarjeta .ico { color: var(--azul); margin-bottom: 12px; }
+.org-tarjeta h3 { font-size: 16px; margin-bottom: 8px; }
+.org-tarjeta p { font-size: 13px; color: var(--tinta-2); }
+.org-tarjeta small { display: block; margin-top: 8px; color: var(--tinta-2); font-size: 11px; }
+.org-iniciativas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.org-iniciativa { min-width: 0; overflow: hidden; border: 1px solid var(--linea); background: var(--sup); border-radius: 14px; }
+.org-iniciativa .org-foto { min-height: 140px; border: 0; border-bottom: 1px solid var(--linea); border-radius: 0; }
+.org-iniciativa > div:last-child { padding: 16px; }
+.org-iniciativa h3 { font-size: 15px; margin-bottom: 6px; }
+.org-iniciativa p { color: var(--tinta-2); font-size: 13px; }
+.org-galeria { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.org-galeria .org-foto { min-height: 140px; }
+.org-contactos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.org-cta { margin-top: 32px; background: var(--sup-2); padding: 22px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.org-cta h2 { font-size: 20px; margin: 7px 0; }
+.org-cta p { color: var(--tinta-2); font-size: 13px; }
+.org-cta .btn { white-space: nowrap; }
+/* Distribución de las cinco tarjetas como en el Figma: 3 arriba y 2 abajo. */
+.inicio .grilla { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.inicio .grilla > .tarjeta:nth-child(-n + 3) { grid-column: span 2; }
+.inicio .grilla > .tarjeta:nth-child(n + 4) { grid-column: span 3; }
+@media (max-width: 760px) {
+  .org-pagina { padding: 22px 16px 40px; }
+  .org-hero { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .org-hero h1 { font-size: 30px; }
+  .org-foto { min-height: 180px; }
+  .org-tarjetas, .org-iniciativas, .org-contactos { grid-template-columns: minmax(0, 1fr); }
+  .org-galeria { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .org-galeria .org-foto { min-height: 110px; padding: 10px; }
+  .org-galeria .org-foto b, .org-galeria .org-foto small { font-size: 10px; }
+  .org-cta { align-items: stretch; flex-direction: column; }
+  .org-cta .btn { white-space: normal; width: 100%; }
+  .inicio .grilla { grid-template-columns: minmax(0, 1fr); }
+  .inicio .grilla > .tarjeta:nth-child(n) { grid-column: 1; }
+}

@@ -1,6 +1,6 @@
 // Campus San Joaquín · app del mapa interactivo
 // HTML/CSS/JS sin librerías. Las vistas se eligen con el # de la URL:
-// #inicio, #mapa, #lugar-2, #bloque, #comunidad, #publicar, #compartir, #ra-1
+// #inicio, #mapa, #lugar-2, #organizacion, #bloque, #comunidad, #publicar, #compartir, #ra-1
 
 const app = document.getElementById("app");
 
@@ -608,6 +608,116 @@ function abrirFicha(id) {
   else centrar(l.x, l.y, 0.62, 0.5);
 }
 
+// ---------- vista: conoce Bloque Sansano ----------
+// Los espacios provisionales se completarán solo con información oficial validada.
+function vistaOrganizacion() {
+  const fotoPendiente = (nombre) => `
+    <div class="org-foto" role="img" aria-label="Fotografía pendiente: ${nombre}">
+      ${ico("imagen")}
+      <b>Fotografía oficial pendiente</b>
+      <small>${nombre}</small>
+    </div>`;
+
+  app.innerHTML = `
+    <section class="org-pagina">
+      <a class="volver" href="#inicio">${ico("atras")} Volver al inicio</a>
+
+      <header class="org-hero">
+        <div>
+          <span class="etiqueta">Vida en el campus</span>
+          <h1>Conoce Bloque Sansano</h1>
+          <p>Un espacio para conocer a la agrupación, su historia y su participación en la comunidad universitaria.</p>
+          <p class="org-pendiente">Contenido pendiente de validación oficial</p>
+        </div>
+        ${fotoPendiente("Imagen de la agrupación por proporcionar")}
+      </header>
+
+      <section class="org-seccion" aria-labelledby="org-quienes">
+        <h2 id="org-quienes">¿Quiénes somos?</h2>
+        <div class="org-panel">
+          <span class="etiqueta">Texto provisional</span>
+          <h3>Historia y origen de Bloque Sansano</h3>
+          <p>En este espacio se incorporará la presentación oficial de la agrupación: cómo surgió, cuáles son sus propósitos y cómo se vincula con la comunidad universitaria.</p>
+          <small>Pendiente de información y validación de sus representantes.</small>
+        </div>
+      </section>
+
+      <section class="org-seccion" aria-labelledby="org-mision">
+        <h2 id="org-mision">Misión y objetivos</h2>
+        <div class="org-tarjetas">
+          <article class="org-tarjeta">
+            ${ico("foco")}
+            <h3>Misión</h3>
+            <p>Incorporar aquí la misión oficial de la agrupación.</p>
+          </article>
+          <article class="org-tarjeta">
+            ${ico("pin")}
+            <h3>Objetivos</h3>
+            <p>Incorporar aquí los objetivos definidos por Bloque Sansano.</p>
+          </article>
+          <article class="org-tarjeta">
+            ${ico("users")}
+            <h3>Valores</h3>
+            <p>Incorporar aquí los valores que la agrupación declare.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="org-seccion" aria-labelledby="org-hacemos">
+        <h2 id="org-hacemos">¿Qué hacemos?</h2>
+        <p class="org-intro">Espacios para presentar iniciativas reales de la agrupación, pendientes de validar.</p>
+        <div class="org-iniciativas">
+          ${[1, 2, 3].map((numero) => `
+            <article class="org-iniciativa">
+              ${fotoPendiente(`Imagen de la iniciativa ${numero}`)}
+              <div>
+                <h3>Iniciativa ${numero} · Por completar</h3>
+                <p>Nombre y descripción oficial de una iniciativa realizada por Bloque Sansano.</p>
+              </div>
+            </article>
+          `).join("")}
+        </div>
+      </section>
+
+      <section class="org-seccion" aria-labelledby="org-galeria">
+        <h2 id="org-galeria">Galería</h2>
+        <p class="org-intro">Fotografías de integrantes y actividades · Material oficial por proporcionar.</p>
+        <div class="org-galeria">
+          ${[1, 2, 3, 4, 5, 6].map((numero) => fotoPendiente(`Fotografía ${numero} por proporcionar`)).join("")}
+        </div>
+      </section>
+
+      <section class="org-seccion" aria-labelledby="org-contacto">
+        <h2 id="org-contacto">Redes y contacto</h2>
+        <div class="org-contactos">
+          <article class="org-tarjeta">
+            ${ico("mensaje")}
+            <h3>Instagram</h3>
+            <p>Usuario oficial por confirmar.</p>
+            <small>Sin enlace activo hasta su validación.</small>
+          </article>
+          <article class="org-tarjeta">
+            ${ico("mensaje")}
+            <h3>Otros medios oficiales</h3>
+            <p>Correo o medio de contacto oficial por confirmar.</p>
+            <small>Sin enlace activo hasta su validación.</small>
+          </article>
+        </div>
+      </section>
+
+      <section class="org-cta" aria-labelledby="org-actividades">
+        <div>
+          <span class="etiqueta">Actividades</span>
+          <h2 id="org-actividades">Próximas convocatorias</h2>
+          <p>Consulta las actividades publicadas por los representantes de Bloque Sansano.</p>
+        </div>
+        <a class="btn btn-azul" href="#bloque">Ver próximas convocatorias ${ico("flecha")}</a>
+      </section>
+
+      <footer class="pie-pag"><span>Campus San Joaquín · USM</span><span>Contenido de la agrupación pendiente de validación</span></footer>
+    </section>`;
+}
+
 // ---------- vista: Bloque Sansano ----------
 function vistaBloque(resaltar) {
   const lista = todasConvs();
@@ -623,11 +733,11 @@ function vistaBloque(resaltar) {
   ];
   app.innerHTML = `
     <section class="pagina">
-      <a class="volver" href="#mapa">${ico("atras")} Volver al Mapa</a>
+      <a class="volver" href="#organizacion">${ico("atras")} Conoce Bloque Sansano</a>
       <div class="pag-cab">
         <div>
           <span class="etiqueta">Vida en el campus</span>
-          <h1>Bloque Sansano</h1>
+          <h1>Próximas convocatorias</h1>
           <p>Encuéntrate, participa y comparte en las próximas convocatorias del campus.</p>
         </div>
       </div>
@@ -913,6 +1023,133 @@ function mostrarCapa(l, sinCamara) {
   );
 }
 
+// Experiencia interactiva de la Plaza: se activa con reconocimiento RA
+// o desde el botón "Explorar sin cámara".
+// El testamento y el significado oficial del lema se contrastaron con usm.cl.
+// La reflexión social actual está presentada como interpretación, no como cita.
+function mostrarLegadoPlaza(sinCamara = false) {
+  const contenedor = document.querySelector(".pagina.ra");
+  if (!contenedor) return;
+
+  let seccion = document.getElementById("plaza-legado");
+  if (seccion) {
+    // No reiniciar la lectura si MindAR pierde y vuelve a encontrar el objetivo.
+    if (!sinCamara) {
+      const estado = seccion.querySelector(".plaza-legado__eyebrow");
+      if (estado) estado.innerHTML = ico("check") + " Monumento reconocido";
+    }
+    // La tarjeta RA puede tocarse de nuevo para volver a los capítulos.
+    seccion.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+
+  seccion = document.createElement("section");
+  seccion.id = "plaza-legado";
+  seccion.className = "plaza-legado";
+  seccion.setAttribute("aria-label", "Explora el legado de Federico Santa María");
+  seccion.innerHTML = `
+    <div class="plaza-legado__hero">
+      <div class="plaza-legado__imagen" aria-hidden="true">
+        <img src="img/plaza.jpg" alt="" loading="lazy">
+        <span class="plaza-legado__destello"></span>
+        <span class="plaza-legado__lema">EX UMBRA IN SOLEM</span>
+      </div>
+      <div class="plaza-legado__intro">
+        <span class="plaza-legado__eyebrow">${ico("check")} ${sinCamara ? "Vista previa sin cámara" : "Monumento reconocido"}</span>
+        <span class="plaza-legado__sobretitulo">EDUCACIÓN · IGUALDAD DE OPORTUNIDADES · COMUNIDAD</span>
+        <h2>De la sombra <em>a la luz.</em></h2>
+        <p>El legado de Federico Santa María nos invita a pensar quiénes pueden acceder al conocimiento y qué responsabilidad tenemos frente a la desigualdad.</p>
+      </div>
+    </div>
+
+    <div class="plaza-legado__cuerpo">
+      <div class="plaza-legado__avance">
+        <span id="plaza-paso-texto" aria-live="polite">Capítulo 1 de 3</span>
+        <span class="plaza-legado__linea" aria-hidden="true"><span id="plaza-paso-barra" style="width:33.33%"></span></span>
+      </div>
+
+      <div class="plaza-legado__tabs" role="tablist" aria-label="Capítulos del legado">
+        <button type="button" role="tab" id="plaza-tab-0" aria-selected="true" aria-controls="plaza-panel-0" data-plaza-paso="0"><span>01</span> El testamento</button>
+        <button type="button" role="tab" id="plaza-tab-1" aria-selected="false" aria-controls="plaza-panel-1" data-plaza-paso="1"><span>02</span> El lema</button>
+        <button type="button" role="tab" id="plaza-tab-2" aria-selected="false" aria-controls="plaza-panel-2" data-plaza-paso="2"><span>03</span> Tu legado</button>
+      </div>
+
+      <article class="plaza-legado__panel" id="plaza-panel-0" role="tabpanel" aria-labelledby="plaza-tab-0">
+        <span class="plaza-legado__marca">01 · EDUCACIÓN Y DESIGUALDAD SOCIAL</span>
+        <h3>El conocimiento no debería depender del origen social</h3>
+        <p>A comienzos del siglo XX, las condiciones económicas limitaban las oportunidades de estudiar. Federico Santa María reconoció esa desigualdad y destinó su patrimonio a crear oportunidades educativas para jóvenes de escasos recursos que demostraran mérito y aptitudes.</p>
+        <p>En su testamento de 1920 expresó que era importante <strong>«levantar al proletario de mi patria»</strong>. Su proyecto entendía la educación como una vía de desarrollo social y planteaba que quienes tenían más recursos debían contribuir a ampliar las oportunidades de aprendizaje.</p>
+        <p class="plaza-legado__nota">Contexto histórico: su propuesta se dirigía especialmente a jóvenes meritorios de escasos recursos; no establecía un acceso universal sin condiciones.</p>
+        <a class="plaza-legado__enlace" href="https://usm.cl/universidad/federico-santa-maria/testamento/" target="_blank" rel="noopener noreferrer">Leer el testamento original (USM) ${ico("flecha")}</a>
+      </article>
+
+      <article class="plaza-legado__panel" id="plaza-panel-1" role="tabpanel" aria-labelledby="plaza-tab-1" hidden>
+        <span class="plaza-legado__marca">02 · UNA LECTURA CRÍTICA DEL LEMA</span>
+        <h3>¿De qué sombra queremos salir?</h3>
+        <div class="plaza-legado__frase" aria-label="De la sombra a la luz">
+          <span class="plaza-legado__frase-sombra">DE LA SOMBRA</span>
+          ${ico("flecha")}
+          <span class="plaza-legado__frase-luz">A LA LUZ</span>
+        </div>
+        <p><strong>«Ex umbra in solem» significa «De la sombra a la luz».</strong> Para la USM, el conocimiento es la luz que guía el desarrollo de las sociedades.</p>
+        <p>Desde una interpretación social actual, la sombra también puede representar la exclusión, la falta de recursos y las barreras que impiden a muchas personas aprender y desarrollar sus capacidades.</p>
+        <p class="plaza-legado__reflexion">Avanzar hacia la luz no es solamente adquirir conocimientos: es preguntarnos cómo abrir oportunidades para que más personas puedan hacerlo.</p>
+        <a class="plaza-legado__enlace" href="https://usm.cl/universidad/simbolos/" target="_blank" rel="noopener noreferrer">Conocer el significado oficial (USM) ${ico("flecha")}</a>
+      </article>
+
+      <article class="plaza-legado__panel" id="plaza-panel-2" role="tabpanel" aria-labelledby="plaza-tab-2" hidden>
+        <span class="plaza-legado__marca">03 · NUESTRA RESPONSABILIDAD HOY</span>
+        <h3>¿Qué significa hoy democratizar el conocimiento?</h3>
+        <p>El legado de Federico Santa María nos deja una pregunta que sigue vigente: ¿cómo construir una educación que no reproduzca las desigualdades de nuestra sociedad?</p>
+        <p>Como estudiantes y futuros profesionales, no solo importa cuánto aprendemos. También importa <strong>para quiénes y para qué usamos ese conocimiento</strong>, y cómo contribuimos a abrir oportunidades para otras personas.</p>
+        <div class="plaza-legado__pregunta">
+          ${ico("users")}
+          <div><strong>¿De qué sirve iluminarnos con el conocimiento si dejamos a otros en la sombra?</strong><p>Esta es una pregunta para reflexionar desde el presente, no una cita histórica. Comparte qué significa para ti una comunidad sansana más justa.</p></div>
+        </div>
+        <a class="plaza-legado__cta" href="#compartir-1">Compartir mi reflexión ${ico("flecha")}</a>
+      </article>
+
+      <div class="plaza-legado__controles">
+        <button type="button" class="plaza-legado__anterior" data-plaza-anterior disabled>${ico("atras")} Anterior</button>
+        <button type="button" class="plaza-legado__siguiente" data-plaza-siguiente>Siguiente capítulo ${ico("flecha")}</button>
+      </div>
+    </div>
+  `;
+
+  const botones = Array.from(seccion.querySelectorAll("[data-plaza-paso]"));
+  const paneles = Array.from(seccion.querySelectorAll(".plaza-legado__panel"));
+  const anterior = seccion.querySelector("[data-plaza-anterior]");
+  const siguiente = seccion.querySelector("[data-plaza-siguiente]");
+  let actual = 0;
+  function mostrarPaso(n) {
+    actual = Math.max(0, Math.min(2, n));
+    botones.forEach((b, i) => b.setAttribute("aria-selected", String(i === actual)));
+    paneles.forEach((panel, i) => { panel.hidden = i !== actual; });
+    seccion.querySelector("#plaza-paso-texto").textContent = `Capítulo ${actual + 1} de 3`;
+    seccion.querySelector("#plaza-paso-barra").style.width = `${(actual + 1) / 3 * 100}%`;
+    anterior.disabled = actual === 0;
+    siguiente.hidden = actual === 2;
+  }
+  seccion.addEventListener("click", (evento) => {
+    const tab = evento.target.closest("[data-plaza-paso]");
+    if (tab) mostrarPaso(Number(tab.dataset.plazaPaso));
+    if (evento.target.closest("[data-plaza-anterior]")) mostrarPaso(actual - 1);
+    if (evento.target.closest("[data-plaza-siguiente]")) mostrarPaso(actual + 1);
+  });
+  seccion.addEventListener("keydown", (evento) => {
+    const tab = evento.target.closest("[data-plaza-paso]");
+    if (!tab || !["ArrowRight", "ArrowLeft", "Home", "End"].includes(evento.key)) return;
+    evento.preventDefault();
+    const nuevo = evento.key === "Home" ? 0 : evento.key === "End" ? 2 :
+      evento.key === "ArrowRight" ? (actual + 1) % 3 : (actual + 2) % 3;
+    mostrarPaso(nuevo);
+    botones[nuevo].focus();
+  });
+  document.getElementById("ra-botones").insertAdjacentElement("afterend", seccion);
+  // El contenido permanece visible incluso si se pierde el seguimiento de cámara.
+  seccion.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 function vistaRA(id) {
   const l = lugar(id);
   if (!l || !l.ra) {
@@ -932,7 +1169,7 @@ function vistaRA(id) {
           </span>
           <h1>Reconocimiento de monumentos</h1>
           <p class="lugar-ra">${esc(l.nombre)}</p>
-          <p>Apunta tu cámara hacia la placa.</p>
+          <p>${l.id === 1 ? "Apunta al título TESTAMENTO y a los primeros párrafos de la placa bajo el busto." : "Apunta tu cámara hacia la placa."}</p>
         </div>
       </div>
 
@@ -953,7 +1190,7 @@ function vistaRA(id) {
           Iniciar experiencia RA
         </button>
         <button class="btn btn-linea" id="ra-sin">
-          Ver contenido sin cámara
+          ${l.id === 1 ? "Explorar sin cámara" : "Ver contenido sin cámara"}
         </button>
       </div>
     </section>
@@ -962,14 +1199,15 @@ function vistaRA(id) {
   const aviso = document.getElementById("ra-aviso");
   const botones = document.getElementById("ra-botones");
   document.getElementById("ra-sin").onclick = () => {
-    mostrarCapa(l, true);
+    if (l.id === 1) mostrarLegadoPlaza(true);
+    else mostrarCapa(l, true);
   };
   document.getElementById("ra-iniciar").onclick = () => {
     visor.classList.remove("guia");
     visor.innerHTML = `
       <iframe
         id="ra-frame"
-        src="ra.html"
+        src="${l.id === 1 ? "ra-plaza.html?v=3" : "ra.html?lugar=testamento"}"
         allow="camera"
         title="Cámara de realidad aumentada"
         style="width:100%;height:100%;
@@ -1007,20 +1245,32 @@ function vistaRA(id) {
       evento.data?.lugar === "testamento" ? lugar(2) :
       null;
 
-    if (!lugarReconocido) return;
+    // Cada recorrido responde únicamente al monumento seleccionado.
+    if (!lugarReconocido || lugarReconocido.id !== l.id) return;
 
     if (evento.data.tipo === "USM_RA_ENCONTRADA") {
       aviso.textContent =
         "¡Reconocido: " + lugarReconocido.nombre + "!";
+      if (l.id === 1) {
+        // La tarjeta 3D permanece en la cámara. El usuario decide cuándo abrir
+        // los capítulos, tocando la tarjeta o el botón accesible inferior.
+        aviso.textContent = "¡Plaza reconocida! Toca la tarjeta flotante para descubrir su legado.";
+      } else {
+        mostrarCapa(lugarReconocido, false);
+      }
+    }
 
-      mostrarCapa(lugarReconocido, false);
+    if (evento.data.tipo === "USM_RA_ABRIR_PLAZA" && l.id === 1) {
+      aviso.textContent = "Explorando el legado de Federico Santa María.";
+      mostrarLegadoPlaza(false);
     }
 
     if (evento.data.tipo === "USM_RA_PERDIDA") {
-      aviso.textContent =
-        "Monumento fuera de cámara. Vuelve a enfocarlo.";
-
-      visor.querySelector(".capa-ra")?.remove();
+      aviso.textContent = document.getElementById("plaza-legado") && l.id === 1
+        ? "Puedes seguir leyendo los capítulos de la Plaza."
+        : "Monumento fuera de cámara. Vuelve a enfocarlo.";
+      // En la Plaza preservamos los capítulos aunque se pierda el seguimiento.
+      if (l.id !== 1) visor.querySelector(".capa-ra")?.remove();
     }
     };
   window.addEventListener(
@@ -1040,7 +1290,7 @@ function vistaInicio() {
         <p>Recorre los lugares que cuentan la historia y la identidad de la Universidad Técnica Federico Santa María.</p>
         <div class="hero-botones">
           <a class="btn btn-blanco" href="#mapa">${ico("brujula")} Explorar el mapa</a>
-          <a class="btn btn-transp" href="#bloque">${ico("users")} Ver actividades</a>
+          <a class="btn btn-transp" href="#organizacion">${ico("users")} Conoce Bloque Sansano</a>
         </div>
       </div>
     </section>
@@ -1062,10 +1312,16 @@ function vistaInicio() {
           <p class="txt">Enfoca ${conRA.map((l) => esc(l.corto)).join(" o el ")} y descubre su contenido.</p>
           <span class="lugar-link">Probar RA ${ico("flecha")}</span>
         </a>
+        <a class="tarjeta tarjeta-link" href="#organizacion">
+          <div class="cat"><span class="ico-caja">${ico("users")}</span><span class="etiqueta">Conoce Bloque Sansano</span></div>
+          <h3>Presentación de la agrupación</h3>
+          <p class="txt">Conoce su historia, propósito e iniciativas.</p>
+          <span class="lugar-link">Conocer la agrupación ${ico("flecha")}</span>
+        </a>
         <a class="tarjeta tarjeta-link" href="#bloque">
-          <div class="cat"><span class="ico-caja">${ico("megafono")}</span><span class="etiqueta">Bloque Sansano</span></div>
-          <h3>Participa</h3>
-          <p class="txt">Revisa las próximas convocatorias y actividades del campus.</p>
+          <div class="cat"><span class="ico-caja">${ico("megafono")}</span><span class="etiqueta">Próximas actividades</span></div>
+          <h3>Convocatorias</h3>
+          <p class="txt">Revisa las próximas convocatorias del campus.</p>
           <span class="lugar-link">Ver convocatorias ${ico("flecha")}</span>
         </a>
         <a class="tarjeta tarjeta-link" href="#comunidad">
@@ -1126,6 +1382,7 @@ function render() {
       lugar: "mapa",
       ra: "mapa",
       bloque: "bloque",
+      organizacion: "bloque",
       publicar: "bloque",
       comunidad: "comunidad",
       compartir: "comunidad",
@@ -1147,6 +1404,7 @@ function render() {
   window.scrollTo(0, 0);
   if (nom == "inicio") vistaInicio();
   else if (nom == "bloque") vistaBloque(param);
+  else if (nom == "organizacion") vistaOrganizacion();
   else if (nom == "comunidad") vistaComunidad(param);
   else if (nom == "publicar") location.href = "admin.html";
   else if (nom == "compartir") vistaCompartir(param);

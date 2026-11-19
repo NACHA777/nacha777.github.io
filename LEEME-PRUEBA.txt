@@ -1,0 +1,36 @@
+PRUEBA DEL RECONOCIMIENTO - CAMPUS SAN JOAQUIN
+
+ESTE ZIP CONTIENE SOLO LOS ARCHIVOS QUE CAMBIAN.
+Para probar en Netlify DEBES DESCARGAR TODA LA RAMA DESDE GITHUB tras subirlos.
+
+Subir a la rama feature/presentacion-bloque-sansano (NO main):
+- index.html (raiz; solo actualiza la version cache de app.js a v=plaza3)
+- app.js (raiz; apunta la Plaza a ra-plaza.html y conserva Testamento)
+- ra-plaza.html (raiz; marcador exclusivo de la Plaza)
+- targets/plaza.mind (dentro de targets/; compilado con la foto cuadrada)
+
+NO TOCAR: ra.html, targets/targets.mind, datos.js, las fotos, el resto de estilos.
+
+Antes de viajar, descarga la rama COMPLETA, extraela y vuelve a publicarla en el
+proyecto DE PRUEBA de Netlify via Deploys, carga manual de carpeta.
+No arrastres solo estos 4 archivos como un proyecto nuevo.
+
+Comprueba desde otro navegador:
+ https://<tu-dominio-netlify>/ra-plaza.html
+
+Si abre la RA y la camara: enfoca de frente la zona del titulo TESTAMENTO y
+los primeros 10-12 renglones. Primero prueba con la imagen de referencia
+mostrada en otra pantalla o impresa: asi separas errores de carga de
+problemas de reconocimiento de la placa real.
+
+Prueba el flujo completo en https://<tu-dominio-netlify>/#ra-1
+-> Iniciar experiencia RA -> detectar placa -> tarjeta flotante
+-> tocar tarjeta o boton -> tres capitulos.
+
+Si arReady sale pero nunca targetFound, vuelve a probar iluminacion,
+distancia, enfoque, contraste y encuadre; entrenar de nuevo si es necesario.
+Si ves errores de carga, verifica 200 OK en /targets/plaza.mind y en /ra-plaza.html.
+
+NO GARANTIZAMOS el reconocimiento hasta probar con el monumento real.
+El sistema es seguimiento de imagen PLANA (texto de la placa), NO
+reconocimiento general del busto tridimensional.
