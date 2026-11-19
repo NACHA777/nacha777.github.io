@@ -1056,9 +1056,9 @@ function mostrarLegadoPlaza(sinCamara = false) {
       </div>
       <div class="plaza-legado__intro">
         <span class="plaza-legado__eyebrow">${ico("check")} ${sinCamara ? "Vista previa sin cámara" : "Monumento reconocido"}</span>
-        <span class="plaza-legado__sobretitulo">EDUCACIÓN · IGUALDAD DE OPORTUNIDADES · COMUNIDAD</span>
-        <h2>De la sombra <em>a la luz.</em></h2>
-        <p>El legado de Federico Santa María nos invita a pensar quiénes pueden acceder al conocimiento y qué responsabilidad tenemos frente a la desigualdad.</p>
+        <span class="plaza-legado__sobretitulo">DE FEDERICO SANTA MARÍA A BLOQUE SANSANO</span>
+        <h2>Un legado que <em>sigue vivo.</em></h2>
+        <p>Una reflexión sobre educación, desigualdad y el papel que asume Bloque Sansano en la construcción de una universidad más justa.</p>
       </div>
     </div>
 
@@ -1150,132 +1150,234 @@ function mostrarLegadoPlaza(sinCamara = false) {
   seccion.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+
+// Experiencia única del gran mural Testamento: tres momentos históricos y sociales.
+// Comparte estética con Plaza; no modifica los capítulos ni el detector de Plaza.
+function mostrarHistoriaTestamento(sinCamara = false) {
+  const contenedor = document.querySelector(".pagina.ra");
+  if (!contenedor) return;
+  let seccion = document.getElementById("testamento-legado");
+  if (seccion) {
+    seccion.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+
+  seccion = document.createElement("section");
+  seccion.id = "testamento-legado";
+  seccion.className = "plaza-legado testamento-legado";
+  seccion.setAttribute("aria-label", "El origen de un compromiso social");
+  seccion.innerHTML = `
+    <div class="plaza-legado__hero">
+      <div class="plaza-legado__imagen" aria-hidden="true">
+        <img src="img/testamento-1.jpeg" alt="" loading="lazy">
+        <span class="plaza-legado__destello"></span>
+        <span class="plaza-legado__lema">UNA MEMORIA QUE NOS INTERPELA</span>
+      </div>
+      <div class="plaza-legado__intro">
+        <span class="plaza-legado__eyebrow">${ico("check")} ${sinCamara ? "Vista previa sin cámara" : "Testamento reconocido"}</span>
+        <span class="plaza-legado__sobretitulo">EL TESTAMENTO DE FEDERICO SANTA MARÍA</span>
+        <h2>El origen de un <em>compromiso social.</em></h2>
+        <p>Descubre cómo su visión de la educación planteó un desafío frente a las desigualdades sociales, y por qué este debate sigue vigente.</p>
+      </div>
+    </div>
+    <div class="plaza-legado__cuerpo">
+      <div class="plaza-legado__avance">
+        <span id="testamento-paso-texto" aria-live="polite">Capítulo 1 de 3</span>
+        <span class="plaza-legado__linea" aria-hidden="true"><span id="testamento-paso-barra" style="width:33.33%"></span></span>
+      </div>
+      <div class="plaza-legado__tabs" role="tablist" aria-label="Momentos del Testamento">
+        <button type="button" role="tab" id="testamento-tab-0" aria-selected="true" aria-controls="testamento-panel-0" data-testamento-paso="0"><span>01</span> Sus palabras</button>
+        <button type="button" role="tab" id="testamento-tab-1" aria-selected="false" aria-controls="testamento-panel-1" data-testamento-paso="1"><span>02</span> La desigualdad</button>
+        <button type="button" role="tab" id="testamento-tab-2" aria-selected="false" aria-controls="testamento-panel-2" data-testamento-paso="2"><span>03</span> El presente</button>
+      </div>
+
+      <article class="plaza-legado__panel" id="testamento-panel-0" role="tabpanel" aria-labelledby="testamento-tab-0">
+        <span class="plaza-legado__marca">01 · ¿QUÉ DECÍA EL TESTAMENTO?</span>
+        <h3>Una educación con propósito social</h3>
+        <p>Al explicar su proyecto educativo, Federico Santa María escribió que era de importancia capital <strong>«levantar al proletario de mi patria»</strong>.</p>
+        <p>En el gran mural que tienes delante puedes leer ese fragmento. Su testamento relaciona la formación técnica y científica con la posibilidad de ampliar oportunidades para quienes tenían menos recursos.</p>
+        <p class="plaza-legado__nota">El texto histórico refleja las ideas y el lenguaje de su época. Lo analizamos sin atribuirle una posición política actual.</p>
+        <a class="plaza-legado__enlace" href="https://usm.cl/universidad/federico-santa-maria/testamento/" target="_blank" rel="noopener noreferrer">Leer el testamento original (USM) ${ico("flecha")}</a>
+      </article>
+
+      <article class="plaza-legado__panel" id="testamento-panel-1" role="tabpanel" aria-labelledby="testamento-tab-1" hidden>
+        <span class="plaza-legado__marca">02 · ¿POR QUÉ HABLAR DE DESIGUALDAD?</span>
+        <h3>El talento no siempre tiene las mismas oportunidades</h3>
+        <p>Las diferencias económicas condicionaban quiénes podían estudiar y desarrollar sus capacidades. Santa María propuso destinar recursos a la formación de jóvenes que mostraran mérito y aptitudes, especialmente de sectores con menos posibilidades.</p>
+        <p>Su propuesta fue importante, aunque <strong>no equivalía a un acceso universal sin requisitos</strong>. Esa distinción ayuda a comprender el contexto histórico y a preguntarnos qué barreras educativas persisten.</p>
+        <div class="plaza-legado__pregunta">${ico("info")}<div><strong>Pregunta para pensar</strong><p>¿Qué oportunidades dependen todavía del lugar donde nacemos o de los recursos que tenemos?</p></div></div>
+      </article>
+
+      <article class="plaza-legado__panel" id="testamento-panel-2" role="tabpanel" aria-labelledby="testamento-tab-2" hidden>
+        <span class="plaza-legado__marca">03 · DEL TESTAMENTO A LAS PREGUNTAS DE HOY</span>
+        <h3>¿Qué papel tiene la organización estudiantil?</h3>
+        <p>Más de un siglo después, las preguntas por la educación y la desigualdad siguen abiertas. El testamento puede ser un punto de partida para reflexionar sobre la universidad que queremos construir.</p>
+        <p>En este recorrido conectamos esa reflexión histórica con <strong>Bloque Sansano</strong> y con la importancia de participar, dialogar y construir comunidad desde el presente.</p>
+        <div class="plaza-legado__pregunta">${ico("users")}<div><strong>Del testamento a la acción</strong><p>¿Cómo podemos aportar, como estudiantes, a una universidad más justa e inclusiva?</p></div></div>
+        <a class="plaza-legado__cta" href="#organizacion">Conoce a Bloque Sansano ${ico("flecha")}</a>
+      </article>
+
+      <div class="plaza-legado__controles">
+        <button type="button" class="plaza-legado__anterior" data-testamento-anterior disabled>${ico("atras")} Anterior</button>
+        <button type="button" class="plaza-legado__siguiente" data-testamento-siguiente>Siguiente capítulo ${ico("flecha")}</button>
+      </div>
+    </div>
+  `;
+  const botones = Array.from(seccion.querySelectorAll("[data-testamento-paso]"));
+  const paneles = Array.from(seccion.querySelectorAll(".plaza-legado__panel"));
+  const anterior = seccion.querySelector("[data-testamento-anterior]");
+  const siguiente = seccion.querySelector("[data-testamento-siguiente]");
+  let actual = 0;
+  function mostrarPaso(n) {
+    actual = Math.max(0, Math.min(2, n));
+    botones.forEach((b, i) => b.setAttribute("aria-selected", String(i === actual)));
+    paneles.forEach((panel, i) => { panel.hidden = i !== actual; });
+    seccion.querySelector("#testamento-paso-texto").textContent = `Capítulo ${actual + 1} de 3`;
+    seccion.querySelector("#testamento-paso-barra").style.width = `${(actual + 1) / 3 * 100}%`;
+    anterior.disabled = actual === 0;
+    siguiente.hidden = actual === 2;
+  }
+  seccion.addEventListener("click", (evento) => {
+    const tab = evento.target.closest("[data-testamento-paso]");
+    if (tab) mostrarPaso(Number(tab.dataset.testamentoPaso));
+    if (evento.target.closest("[data-testamento-anterior]")) mostrarPaso(actual - 1);
+    if (evento.target.closest("[data-testamento-siguiente]")) mostrarPaso(actual + 1);
+  });
+  seccion.addEventListener("keydown", (evento) => {
+    const tab = evento.target.closest("[data-testamento-paso]");
+    if (!tab || !["ArrowRight", "ArrowLeft", "Home", "End"].includes(evento.key)) return;
+    evento.preventDefault();
+    const nuevo = evento.key === "Home" ? 0 : evento.key === "End" ? 2 :
+      evento.key === "ArrowRight" ? (actual + 1) % 3 : (actual + 2) % 3;
+    mostrarPaso(nuevo);
+    botones[nuevo].focus();
+  });
+  document.getElementById("ra-botones").insertAdjacentElement("afterend", seccion);
+  seccion.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+
 function vistaRA(id) {
   const l = lugar(id);
   if (!l || !l.ra) {
     location.hash = "mapa";
     return;
   }
+  const esPlaza = l.id === 1;
+  const presentacion = esPlaza ? {
+    etiqueta: "¡Plaza reconocida!",
+    titulo: "Un legado que sigue vivo",
+    subtitulo: "De Federico Santa María a Bloque Sansano",
+    descripcion: "Una reflexión sobre educación, desigualdad y el papel que asume Bloque Sansano en la construcción de una universidad más justa.",
+    boton: "Explorar esta conexión",
+    pista: "Enfoca la placa pequeña bajo el busto de la Plaza: el título TESTAMENTO y las primeras líneas."
+  } : {
+    etiqueta: "¡Testamento reconocido!",
+    titulo: "El origen de un compromiso social",
+    subtitulo: "El testamento de Federico Santa María",
+    descripcion: "Descubre cómo su visión de la educación planteó un desafío frente a las desigualdades sociales, y por qué este debate sigue vigente.",
+    boton: "Explorar el testamento",
+    pista: "Enfoca el título TESTAMENTO y las primeras líneas del mural grande del interior, no la placa de la Plaza."
+  };
+
   app.innerHTML = `
     <section class="pagina ra">
-      <a class="volver" href="#lugar-${l.id}">
-        ${ico("atras")} Volver al Mapa
-      </a>
-
+      <a class="volver" href="#lugar-${l.id}">${ico("atras")} Volver al Mapa</a>
       <div class="pag-cab">
         <div>
-          <span class="etiqueta">
-            ${ico("scan")} Experiencia RA
-          </span>
+          <span class="etiqueta">${ico("scan")} Experiencia RA</span>
           <h1>Reconocimiento de monumentos</h1>
           <p class="lugar-ra">${esc(l.nombre)}</p>
-          <p>${l.id === 1 ? "Apunta al título TESTAMENTO y a los primeros párrafos de la placa bajo el busto." : "Apunta tu cámara hacia la placa."}</p>
+          <p>${esc(presentacion.pista)}</p>
         </div>
       </div>
-
-      <div class="visor guia" id="visor"
-           style="position:relative;overflow:hidden">
+      <div class="visor guia" id="visor" style="position:relative;overflow:hidden">
         ${guiaPlaca()}
-        <div class="esquinas">
-          <i></i><i></i><i></i><i></i>
-        </div>
+        <div class="esquinas"><i></i><i></i><i></i><i></i></div>
       </div>
+      <p class="aviso" id="ra-aviso" role="status" aria-live="polite">Presiona iniciar para activar la cámara.</p>
 
-      <p class="aviso" id="ra-aviso">
-        Presiona iniciar para activar la cámara.
-      </p>
+      <section class="ra-descubrimiento" id="ra-descubrimiento" aria-label="Resultado del reconocimiento" hidden>
+        <div class="ra-descubrimiento__encabezado">${ico("check")} <span>${esc(presentacion.etiqueta)}</span></div>
+        <div class="ra-descubrimiento__panel">
+          <div class="ra-descubrimiento__simbolo" aria-hidden="true">${ico(esPlaza ? "sol" : "info")}</div>
+          <h2>${esc(presentacion.titulo)}</h2>
+          <p class="ra-descubrimiento__subtitulo">${esc(presentacion.subtitulo)}</p>
+          <p class="ra-descubrimiento__descripcion">${esc(presentacion.descripcion)}</p>
+        </div>
+        <button type="button" class="ra-descubrimiento__btn" id="ra-explorar">
+          ${esc(presentacion.boton)} ${ico("flecha")}
+        </button>
+      </section>
 
       <div class="ra-botones" id="ra-botones">
-        <button class="btn btn-azul" id="ra-iniciar">
-          Iniciar experiencia RA
-        </button>
-        <button class="btn btn-linea" id="ra-sin">
-          ${l.id === 1 ? "Explorar sin cámara" : "Ver contenido sin cámara"}
-        </button>
+        <button class="btn btn-azul" id="ra-iniciar">Iniciar experiencia RA</button>
+        <button class="btn btn-linea" id="ra-sin">Explorar sin cámara</button>
       </div>
     </section>
   `;
+  const pagina = app.querySelector(".pagina.ra");
   const visor = document.getElementById("visor");
   const aviso = document.getElementById("ra-aviso");
   const botones = document.getElementById("ra-botones");
-  document.getElementById("ra-sin").onclick = () => {
-    if (l.id === 1) mostrarLegadoPlaza(true);
-    else mostrarCapa(l, true);
-  };
+  const descubierto = document.getElementById("ra-descubrimiento");
+  const explorar = document.getElementById("ra-explorar");
+  let reconocido = false;
+
+  function abrirContenido(sinCamara = false) {
+    pagina.classList.remove("ra-detectada");
+    descubierto.classList.add("ra-descubrimiento--abierto");
+    if (esPlaza) mostrarLegadoPlaza(sinCamara);
+    else mostrarHistoriaTestamento(sinCamara);
+  }
+  explorar.onclick = () => abrirContenido(false);
+  document.getElementById("ra-sin").onclick = () => abrirContenido(true);
+
   document.getElementById("ra-iniciar").onclick = () => {
     visor.classList.remove("guia");
     visor.innerHTML = `
-      <iframe
-        id="ra-frame"
-        src="${l.id === 1 ? "ra-plaza.html?v=3" : "ra.html?lugar=testamento"}"
-        allow="camera"
-        title="Cámara de realidad aumentada"
-        style="width:100%;height:100%;
-               min-height:350px;border:0;
-               display:block">
-      </iframe>
+      <iframe id="ra-frame"
+        src="${esPlaza ? "ra-plaza.html?v=4" : "ra-testamento.html?v=1"}"
+        allow="camera" title="Cámara de realidad aumentada: ${esc(l.nombre)}"
+        style="width:100%;height:100%;border:0;display:block"></iframe>
     `;
-    aviso.textContent =
-      "Buscando el monumento de " + l.nombre + "...";
-    botones.innerHTML = `
-      <button class="btn btn-linea" id="ra-parar">
-        Detener cámara
-      </button>
-    `;
+    aviso.textContent = "Buscando " + l.nombre + "...";
+    botones.innerHTML = `<button class="btn btn-linea" id="ra-parar">Detener cámara</button>`;
     document.getElementById("ra-parar").onclick = () => {
       apagarCamara();
       vistaRA(id);
     };
   };
-  // Evitar registrar varias veces el mismo listener.
+
+  // Sólo procesar eventos del iframe activo, del mismo origen y lugar.
   if (window.usmRAListener) {
-    window.removeEventListener(
-      "message", window.usmRAListener
-    );
+    window.removeEventListener("message", window.usmRAListener);
   }
   window.usmRAListener = (evento) => {
     if (evento.origin !== window.location.origin) return;
     const frame = document.getElementById("ra-frame");
-    if (!frame || evento.source !== frame.contentWindow) {
-      return;
-    }
-    
-    const lugarReconocido =
-      evento.data?.lugar === "plaza" ? lugar(1) :
-      evento.data?.lugar === "testamento" ? lugar(2) :
-      null;
-
-    // Cada recorrido responde únicamente al monumento seleccionado.
-    if (!lugarReconocido || lugarReconocido.id !== l.id) return;
+    if (!frame || evento.source !== frame.contentWindow) return;
+    if (evento.data?.lugar !== (esPlaza ? "plaza" : "testamento")) return;
 
     if (evento.data.tipo === "USM_RA_ENCONTRADA") {
-      aviso.textContent =
-        "¡Reconocido: " + lugarReconocido.nombre + "!";
-      if (l.id === 1) {
-        // La tarjeta 3D permanece en la cámara. El usuario decide cuándo abrir
-        // los capítulos, tocando la tarjeta o el botón accesible inferior.
-        aviso.textContent = "¡Plaza reconocida! Toca la tarjeta flotante para descubrir su legado.";
-      } else {
-        mostrarCapa(lugarReconocido, false);
+      aviso.textContent = esPlaza ? "¡Plaza reconocida! Ya puedes explorar su conexión con Bloque Sansano." : "¡Testamento reconocido! Ya puedes explorar su historia.";
+      // Persistencia: una vez reconocido no depende de mantener el teléfono inmóvil.
+      if (!reconocido) {
+        reconocido = true;
+        descubierto.hidden = false;
+        pagina.classList.add("ra-detectada");
+        descubierto.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
     }
-
-    if (evento.data.tipo === "USM_RA_ABRIR_PLAZA" && l.id === 1) {
-      aviso.textContent = "Explorando el legado de Federico Santa María.";
-      mostrarLegadoPlaza(false);
+    if (evento.data.tipo === "USM_RA_PERDIDA" && !reconocido) {
+      aviso.textContent = "Buscando monumento... vuelve a enfocarlo.";
     }
-
-    if (evento.data.tipo === "USM_RA_PERDIDA") {
-      aviso.textContent = document.getElementById("plaza-legado") && l.id === 1
-        ? "Puedes seguir leyendo los capítulos de la Plaza."
-        : "Monumento fuera de cámara. Vuelve a enfocarlo.";
-      // En la Plaza preservamos los capítulos aunque se pierda el seguimiento.
-      if (l.id !== 1) visor.querySelector(".capa-ra")?.remove();
+    if (evento.data.tipo === "USM_RA_ABRIR_PLAZA" && esPlaza) {
+      // Compatibilidad con un visor almacenado en caché.
+      abrirContenido(false);
     }
-    };
-  window.addEventListener(
-    "message", window.usmRAListener
-  );
+  };
+  window.addEventListener("message", window.usmRAListener);
 }
 
 // ---------- vista: Inicio (página principal) ----------
