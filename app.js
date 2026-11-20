@@ -240,6 +240,14 @@ function fotoLugar(l) {
         loading="lazy"
       >
     </div>
+    ${l.fuenteFoto ? `
+      <p class="credito-foto" style="margin:7px 0 12px;font-size:.77rem;color:#64748b">
+        Fuente de la fotografía:
+        ${l.fuenteFotoUrl
+          ? `<a href="${esc(l.fuenteFotoUrl)}" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">${esc(l.fuenteFoto)}</a>`
+          : esc(l.fuenteFoto)}
+      </p>
+    ` : ""}
     ${fotos.length > 1 ? `
       <details class="galeria-lugar">
         <summary>Ver fotografías (${fotos.length})</summary>
@@ -487,7 +495,7 @@ function htmlRecorrido() {
         <li><button data-lugar="${l.id}">
           <span class="n">${l.id}</span>
           <span class="t">${esc(l.nombre)}</span>
-          ${l.ra ? `<span class="ra" title="Tiene realidad aumentada">${ico("scan")}</span>` : ""}
+          ${Number(l.id) === 1 ? `<span class="ra" title="Tiene realidad aumentada">${ico("scan")}</span>` : ""}
           ${l.propuesta ? `<span class="prop">Propuesta</span>` : ""}
         </button></li>`,
         )
@@ -532,7 +540,7 @@ function htmlFicha(l) {
     ${conv ? cajaConv : ""}
     <div class="acciones">
       <button class="btn btn-azul btn-ancho" data-conocer aria-expanded="false">Conocer más ${ico("flecha")}</button>
-      ${l.ra ? `<a class="btn btn-linea btn-ancho" href="#ra-${l.id}">${ico("scan")} Ver en realidad aumentada</a>` : ""}
+      ${Number(l.id) === 1 ? `<a class="btn btn-linea btn-ancho" href="#ra-1">${ico("scan")} Ver en realidad aumentada</a>` : Number(l.id) === 2 ? `<a class="btn btn-linea btn-ancho" href="#ra-2">${ico("info")} Explorar el Testamento</a>` : ""}
     </div>
     <div class="mas" hidden>
       <h3>Sobre este lugar</h3>
@@ -1058,7 +1066,7 @@ function mostrarLegadoPlaza(sinCamara = false) {
         <span class="plaza-legado__eyebrow">${ico("check")} ${sinCamara ? "Vista previa sin cámara" : "Monumento reconocido"}</span>
         <span class="plaza-legado__sobretitulo">DE FEDERICO SANTA MARÍA A BLOQUE SANSANO</span>
         <h2>Un legado que <em>sigue vivo.</em></h2>
-        <p>Una reflexión sobre educación, desigualdad y el papel que asume Bloque Sansano en la construcción de una universidad más justa.</p>
+        <p>Descubre cómo el legado de Federico Santa María sobre educación y oportunidades se conecta con la participación estudiantil y el compromiso de Bloque Sansano por contribuir a una comunidad universitaria más justa.</p>
       </div>
     </div>
 
@@ -1077,8 +1085,8 @@ function mostrarLegadoPlaza(sinCamara = false) {
       <article class="plaza-legado__panel" id="plaza-panel-0" role="tabpanel" aria-labelledby="plaza-tab-0">
         <span class="plaza-legado__marca">01 · EDUCACIÓN Y DESIGUALDAD SOCIAL</span>
         <h3>El conocimiento no debería depender del origen social</h3>
-        <p>A comienzos del siglo XX, las condiciones económicas limitaban las oportunidades de estudiar. Federico Santa María reconoció esa desigualdad y destinó su patrimonio a crear oportunidades educativas para jóvenes de escasos recursos que demostraran mérito y aptitudes.</p>
-        <p>En su testamento de 1920 expresó que era importante <strong>«levantar al proletario de mi patria»</strong>. Su proyecto entendía la educación como una vía de desarrollo social y planteaba que quienes tenían más recursos debían contribuir a ampliar las oportunidades de aprendizaje.</p>
+        <p>A comienzos del siglo XX, las dificultades económicas limitaban el acceso a la educación. Federico Santa María destinó su patrimonio a ampliar las oportunidades de formación para jóvenes de escasos recursos que demostraran mérito y aptitudes.</p>
+        <p>En su testamento de 1920 expresó la importancia de <strong>«levantar al proletario de mi patria»</strong>. Su propuesta entendía la educación como un camino para contribuir al desarrollo de la sociedad.</p>
         <p class="plaza-legado__nota">Contexto histórico: su propuesta se dirigía especialmente a jóvenes meritorios de escasos recursos; no establecía un acceso universal sin condiciones.</p>
         <a class="plaza-legado__enlace" href="https://usm.cl/universidad/federico-santa-maria/testamento/" target="_blank" rel="noopener noreferrer">Leer el testamento original (USM) ${ico("flecha")}</a>
       </article>
@@ -1100,11 +1108,12 @@ function mostrarLegadoPlaza(sinCamara = false) {
       <article class="plaza-legado__panel" id="plaza-panel-2" role="tabpanel" aria-labelledby="plaza-tab-2" hidden>
         <span class="plaza-legado__marca">03 · NUESTRA RESPONSABILIDAD HOY</span>
         <h3>¿Qué significa hoy democratizar el conocimiento?</h3>
-        <p>El legado de Federico Santa María nos deja una pregunta que sigue vigente: ¿cómo construir una educación que no reproduzca las desigualdades de nuestra sociedad?</p>
-        <p>Como estudiantes y futuros profesionales, no solo importa cuánto aprendemos. También importa <strong>para quiénes y para qué usamos ese conocimiento</strong>, y cómo contribuimos a abrir oportunidades para otras personas.</p>
+        <p>El legado de Federico Santa María nos invita a pensar en algo que sigue siendo relevante: ¿cómo podemos contribuir a una educación con más oportunidades y menos barreras?</p>
+        <p>Como estudiantes, no solo importa lo que aprendemos, sino también <strong>cómo utilizamos ese conocimiento para aportar a nuestra comunidad</strong>.</p>
+        <p>En ese contexto, iniciativas de organización y participación estudiantil como <strong>Bloque Sansano</strong> abren espacios para reflexionar, compartir ideas y pensar colectivamente qué universidad queremos construir.</p>
         <div class="plaza-legado__pregunta">
           ${ico("users")}
-          <div><strong>¿De qué sirve iluminarnos con el conocimiento si dejamos a otros en la sombra?</strong><p>Esta es una pregunta para reflexionar desde el presente, no una cita histórica. Comparte qué significa para ti una comunidad sansana más justa.</p></div>
+          <div><strong>Pregunta para reflexionar</strong><p>¿Qué podemos hacer, desde nuestra vida universitaria, para que más personas tengan oportunidades de aprender y participar?</p></div>
         </div>
         <a class="plaza-legado__cta" href="#compartir-1">Compartir mi reflexión ${ico("flecha")}</a>
       </article>
@@ -1153,7 +1162,7 @@ function mostrarLegadoPlaza(sinCamara = false) {
 
 // Experiencia única del gran mural Testamento: tres momentos históricos y sociales.
 // Comparte estética con Plaza; no modifica los capítulos ni el detector de Plaza.
-function mostrarHistoriaTestamento(sinCamara = false) {
+function mostrarHistoriaTestamento(sinCamara = false, sinDesplazar = false) {
   const contenedor = document.querySelector(".pagina.ra");
   if (!contenedor) return;
   let seccion = document.getElementById("testamento-legado");
@@ -1174,10 +1183,10 @@ function mostrarHistoriaTestamento(sinCamara = false) {
         <span class="plaza-legado__lema">UNA MEMORIA QUE NOS INTERPELA</span>
       </div>
       <div class="plaza-legado__intro">
-        <span class="plaza-legado__eyebrow">${ico("check")} ${sinCamara ? "Vista previa sin cámara" : "Testamento reconocido"}</span>
-        <span class="plaza-legado__sobretitulo">EL TESTAMENTO DE FEDERICO SANTA MARÍA</span>
+        <span class="plaza-legado__eyebrow">${ico("info")} Recorrido interactivo · sin cámara</span>
+        <span class="plaza-legado__sobretitulo">DEL TESTAMENTO DE FEDERICO SANTA MARÍA A LA PARTICIPACIÓN DE BLOQUE SANSANO</span>
         <h2>El origen de un <em>compromiso social.</em></h2>
-        <p>Descubre cómo su visión de la educación planteó un desafío frente a las desigualdades sociales, y por qué este debate sigue vigente.</p>
+        <p>Conoce las ideas que dieron origen a la universidad y reflexiona sobre cómo los desafíos de educación y desigualdad se relacionan con la participación estudiantil que hoy busca impulsar Bloque Sansano.</p>
       </div>
     </div>
     <div class="plaza-legado__cuerpo">
@@ -1194,26 +1203,29 @@ function mostrarHistoriaTestamento(sinCamara = false) {
       <article class="plaza-legado__panel" id="testamento-panel-0" role="tabpanel" aria-labelledby="testamento-tab-0">
         <span class="plaza-legado__marca">01 · ¿QUÉ DECÍA EL TESTAMENTO?</span>
         <h3>Una educación con propósito social</h3>
-        <p>Al explicar su proyecto educativo, Federico Santa María escribió que era de importancia capital <strong>«levantar al proletario de mi patria»</strong>.</p>
-        <p>En el gran mural que tienes delante puedes leer ese fragmento. Su testamento relaciona la formación técnica y científica con la posibilidad de ampliar oportunidades para quienes tenían menos recursos.</p>
-        <p class="plaza-legado__nota">El texto histórico refleja las ideas y el lenguaje de su época. Lo analizamos sin atribuirle una posición política actual.</p>
+        <p>En su testamento de 1920, Federico Santa María expresó su preocupación por las desigualdades educativas de su época y su intención de ampliar las oportunidades de formación.</p>
+        <p>Su propuesta contemplaba una Escuela de Artes y Oficios y un Colegio de Ingenieros, con apoyo para estudiantes de escasos recursos que demostraran aptitudes y dedicación.</p>
+        <p>Así, la educación se presentaba no solo como una oportunidad individual, sino también como una forma de contribuir al desarrollo de la sociedad.</p>
+        <p class="plaza-legado__nota">Este recorrido ofrece una interpretación educativa actual de su testamento, no una declaración política atribuida a Federico Santa María.</p>
         <a class="plaza-legado__enlace" href="https://usm.cl/universidad/federico-santa-maria/testamento/" target="_blank" rel="noopener noreferrer">Leer el testamento original (USM) ${ico("flecha")}</a>
       </article>
 
       <article class="plaza-legado__panel" id="testamento-panel-1" role="tabpanel" aria-labelledby="testamento-tab-1" hidden>
         <span class="plaza-legado__marca">02 · ¿POR QUÉ HABLAR DE DESIGUALDAD?</span>
         <h3>El talento no siempre tiene las mismas oportunidades</h3>
-        <p>Las diferencias económicas condicionaban quiénes podían estudiar y desarrollar sus capacidades. Santa María propuso destinar recursos a la formación de jóvenes que mostraran mérito y aptitudes, especialmente de sectores con menos posibilidades.</p>
-        <p>Su propuesta fue importante, aunque <strong>no equivalía a un acceso universal sin requisitos</strong>. Esa distinción ayuda a comprender el contexto histórico y a preguntarnos qué barreras educativas persisten.</p>
-        <div class="plaza-legado__pregunta">${ico("info")}<div><strong>Pregunta para pensar</strong><p>¿Qué oportunidades dependen todavía del lugar donde nacemos o de los recursos que tenemos?</p></div></div>
+        <p>Tener capacidades y ganas de aprender no siempre significa contar con las mismas oportunidades para estudiar.</p>
+        <p>Aunque las condiciones educativas han cambiado desde la época de Federico Santa María, todavía podemos preguntarnos cómo influyen los recursos económicos y las condiciones sociales en la experiencia de los estudiantes.</p>
+        <p>Su testamento nos permite reflexionar sobre la importancia de reconocer esas diferencias y buscar formas de ampliar las oportunidades.</p>
+        <div class="plaza-legado__pregunta">${ico("info")}<div><strong>Pregunta para reflexionar</strong><p>¿Crees que todos los estudiantes tienen las mismas oportunidades para desarrollarse dentro de la universidad?</p></div></div>
       </article>
 
       <article class="plaza-legado__panel" id="testamento-panel-2" role="tabpanel" aria-labelledby="testamento-tab-2" hidden>
         <span class="plaza-legado__marca">03 · DEL TESTAMENTO A LAS PREGUNTAS DE HOY</span>
-        <h3>¿Qué papel tiene la organización estudiantil?</h3>
-        <p>Más de un siglo después, las preguntas por la educación y la desigualdad siguen abiertas. El testamento puede ser un punto de partida para reflexionar sobre la universidad que queremos construir.</p>
-        <p>En este recorrido conectamos esa reflexión histórica con <strong>Bloque Sansano</strong> y con la importancia de participar, dialogar y construir comunidad desde el presente.</p>
-        <div class="plaza-legado__pregunta">${ico("users")}<div><strong>Del testamento a la acción</strong><p>¿Cómo podemos aportar, como estudiantes, a una universidad más justa e inclusiva?</p></div></div>
+        <h3>De las ideas al compromiso estudiantil</h3>
+        <p>El testamento de Federico Santa María nos invita a reflexionar sobre una pregunta que sigue vigente: ¿qué podemos hacer para construir una comunidad universitaria con más oportunidades de participación?</p>
+        <p>Hoy, la organización estudiantil puede ser un espacio para dialogar, identificar necesidades y proponer iniciativas que beneficien a la comunidad.</p>
+        <p>En este contexto, <strong>Bloque Sansano</strong> representa una oportunidad para conocer nuevas formas de organización y participación estudiantil, reflexionando sobre los desafíos del presente y la universidad que queremos construir.</p>
+        <div class="plaza-legado__pregunta">${ico("users")}<div><strong>Pregunta final</strong><p>¿Qué cambios te gustaría impulsar para mejorar la experiencia de los estudiantes en nuestra universidad?</p></div></div>
         <a class="plaza-legado__cta" href="#organizacion">Conoce a Bloque Sansano ${ico("flecha")}</a>
       </article>
 
@@ -1253,14 +1265,42 @@ function mostrarHistoriaTestamento(sinCamara = false) {
     botones[nuevo].focus();
   });
   document.getElementById("ra-botones").insertAdjacentElement("afterend", seccion);
-  seccion.scrollIntoView({ behavior: "smooth", block: "start" });
+  if (!sinDesplazar) seccion.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 
+// El mural del Testamento se ofrece como lectura interactiva, no como RA.
+// Conserva los tres capítulos existentes y NO inicia la cámara.
+function vistaTestamentoInteractivo() {
+  const l = lugar(2);
+  if (!l) {
+    location.hash = "mapa";
+    return;
+  }
+  app.innerHTML = `
+    <section class="pagina ra">
+      <a class="volver" href="#ra-elegir">${ico("atras")} Volver a experiencias</a>
+      <div class="pag-cab">
+        <div>
+          <span class="etiqueta">${ico("info")} Experiencia interactiva</span>
+          <h1>${esc(l.nombre)}</h1>
+          <p>Del testamento de Federico Santa María a la participación de Bloque Sansano: explora tres capítulos sobre educación, desigualdad y el compromiso estudiantil actual.</p>
+        </div>
+      </div>
+      <div id="ra-botones" hidden></div>
+    </section>
+  `;
+  mostrarHistoriaTestamento(true, true);
+}
+
 function vistaRA(id) {
   const l = lugar(id);
-  if (!l || !l.ra) {
+  if (!l || ![1, 2].includes(Number(l.id))) {
     location.hash = "mapa";
+    return;
+  }
+  if (Number(l.id) === 2) {
+    vistaTestamentoInteractivo();
     return;
   }
   const esPlaza = l.id === 1;
@@ -1268,7 +1308,7 @@ function vistaRA(id) {
     etiqueta: "¡Plaza reconocida!",
     titulo: "Un legado que sigue vivo",
     subtitulo: "De Federico Santa María a Bloque Sansano",
-    descripcion: "Una reflexión sobre educación, desigualdad y el papel que asume Bloque Sansano en la construcción de una universidad más justa.",
+    descripcion: "Descubre cómo el legado de Federico Santa María sobre educación y oportunidades se conecta con la participación estudiantil y el compromiso de Bloque Sansano por contribuir a una comunidad universitaria más justa.",
     boton: "Explorar esta conexión",
     pista: "Enfoca la placa pequeña bajo el busto de la Plaza: el título TESTAMENTO y las primeras líneas."
   } : {
@@ -1383,15 +1423,15 @@ function vistaRA(id) {
 // ---------- vista: Inicio (página principal) ----------
 // ---------- vista: elegir la estación de realidad aumentada ----------
 function vistaElegirRA() {
-  const opciones = lugares.filter((l) => l.ra);
+  const opciones = lugares.filter((l) => [1, 2].includes(Number(l.id)));
   app.innerHTML = `
     <section class="pagina">
       <a class="volver" href="#inicio">${ico("atras")} Volver al inicio</a>
       <div class="pag-cab">
         <div>
-          <span class="etiqueta">${ico("scan")} Realidad aumentada</span>
-          <h1>Elige tu experiencia RA</h1>
-          <p>Dos monumentos, dos perspectivas de una misma historia: el legado de Federico Santa María y su conexión con nuestra comunidad.</p>
+          <span class="etiqueta">${ico("scan")} Experiencias del campus</span>
+          <h1>Elige tu experiencia</h1>
+          <p>Dos formas de conocer el legado de Federico Santa María y su conexión con Bloque Sansano: realidad aumentada en la Plaza y lectura interactiva del Testamento.</p>
         </div>
       </div>
       <div class="grilla" style="margin-top:22px;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))">
@@ -1400,22 +1440,21 @@ function vistaElegirRA() {
             <div class="foto" style="margin-top:0;aspect-ratio:16/9">
               <img src="${esc(l.foto)}" alt="${esc(l.nombre)}" loading="lazy">
             </div>
-            <span class="etiqueta">${ico("scan")} Estación RA 0${l.id}</span>
+            <span class="etiqueta">${ico(l.id === 1 ? "scan" : "info")} ${l.id === 1 ? "REALIDAD AUMENTADA · PLAZA" : "EXPERIENCIA INTERACTIVA · TESTAMENTO"}</span>
             <h3>${esc(l.nombre)}</h3>
             <p class="txt">${l.id === 1
-              ? "Un legado que sigue vivo: de Federico Santa María a Bloque Sansano. Enfoca la placa pequeña bajo el busto."
-              : "El origen de un compromiso social. Enfoca las últimas líneas y el nombre FEDERICO SANTA MARÍA CARRERA, al extremo derecho del mural grande."}</p>
-            <span class="lugar-link">Elegir esta experiencia ${ico("flecha")}</span>
+              ? "Un legado que sigue vivo: descubre cómo la educación, las oportunidades y la participación estudiantil se conectan con Bloque Sansano. Enfoca la placa pequeña bajo el busto."
+              : "El origen de un compromiso social: del Testamento de Federico Santa María a la participación de Bloque Sansano. Explora tres capítulos sin usar cámara."}</p>
+            <span class="lugar-link">${l.id === 1 ? "Iniciar experiencia RA" : "Explorar el Testamento"} ${ico("flecha")}</span>
           </a>
         `).join("")}
       </div>
-      <div class="aviso">${ico("info")} Puedes explorar el contenido sin cámara desde cualquiera de las dos estaciones.</div>
+      <div class="aviso">${ico("info")} La Plaza usa reconocimiento de imagen. El Testamento se explora directamente mediante una lectura interactiva.</div>
     </section>
   `;
 }
 
 function vistaInicio() {
-  const conRA = lugares.filter((l) => l.ra);
   app.innerHTML = `
     <section class="hero">
       <img class="hero-img" src="img/plaza.jpg" alt="">
@@ -1442,10 +1481,10 @@ function vistaInicio() {
           <span class="lugar-link">Ir al mapa ${ico("flecha")}</span>
         </a>
         <a class="tarjeta tarjeta-link" href="#ra-elegir">
-          <div class="cat"><span class="ico-caja">${ico("scan")}</span><span class="etiqueta">Realidad aumentada</span></div>
-          <h3>Apunta tu cámara</h3>
-          <p class="txt">Enfoca ${conRA.map((l) => esc(l.corto)).join(" o el ")} y descubre su contenido.</p>
-          <span class="lugar-link">Probar RA ${ico("flecha")}</span>
+          <div class="cat"><span class="ico-caja">${ico("scan")}</span><span class="etiqueta">Experiencias del campus</span></div>
+          <h3>Descubre el legado</h3>
+          <p class="txt">Vive la realidad aumentada de la Plaza y explora el Testamento de forma interactiva.</p>
+          <span class="lugar-link">Elegir experiencia ${ico("flecha")}</span>
         </a>
         <a class="tarjeta tarjeta-link" href="#organizacion">
           <div class="cat"><span class="ico-caja">${ico("users")}</span><span class="etiqueta">Conoce a Bloque Sansano</span></div>
@@ -1483,7 +1522,7 @@ function vistaInicio() {
             </span>
             <span class="parada-chips">
               <span class="chip">${esc(l.tema)}</span>
-              ${l.ra ? `<span class="chip chip-azul">RA</span>` : ""}
+              ${Number(l.id) === 1 ? `<span class="chip chip-azul">RA</span>` : Number(l.id) === 2 ? `<span class="chip">Interactivo</span>` : ""}
             </span>
           </a>`,
           )
