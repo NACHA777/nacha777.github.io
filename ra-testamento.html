@@ -18,7 +18,7 @@
 <body>
   <div id="estado" role="status" aria-live="polite">Iniciando cámara...</div>
   <a-scene
-    mindar-image="imageTargetSrc: ./targets/testamento.mind; autoStart: true; uiScanning: yes; uiLoading: yes"
+    mindar-image="imageTargetSrc: ./targets/testamento-firma.mind; autoStart: true; uiScanning: yes; uiLoading: yes"
     color-space="sRGB" renderer="colorManagement: true"
     vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" embedded>
     <a-camera position="0 0 0" look-controls="enabled: false"
@@ -38,7 +38,7 @@
     }
     objetivo.addEventListener('targetFound', () => {
       reconocido = true;
-      estado.textContent = '¡Testamento reconocido! Explora su historia debajo de la cámara.';
+      estado.textContent = '¡Testamento reconocido! Explora su mensaje debajo de la cámara.';
       avisar('USM_RA_ENCONTRADA');
     });
     objetivo.addEventListener('targetLost', () => {
@@ -46,7 +46,7 @@
       avisar('USM_RA_PERDIDA');
     });
     escena.addEventListener('arReady', () => {
-      estado.textContent = 'Apunta al título TESTAMENTO y las primeras líneas del mural grande.';
+      estado.textContent = 'Apunta a las últimas líneas y a la firma FEDERICO SANTA MARÍA CARRERA, en la parte derecha del muro.';
     });
     escena.addEventListener('arError', () => {
       estado.textContent = 'No se pudo iniciar la cámara. Revisa permisos y targets/testamento.mind.';

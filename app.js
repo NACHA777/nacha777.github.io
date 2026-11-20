@@ -625,8 +625,8 @@ function vistaOrganizacion() {
       <header class="org-hero">
         <div>
           <span class="etiqueta">Vida en el campus</span>
-          <h1>Conoce Bloque Sansano</h1>
-          <p>Un espacio para conocer a la agrupación, su historia y su participación en la comunidad universitaria.</p>
+          <h1>Conoce a Bloque Sansano</h1>
+          <p>Un espacio para conocer sus objetivos, iniciativas y cómo busca aportar a la comunidad universitaria.</p>
           <p class="org-pendiente">Contenido pendiente de validación oficial</p>
         </div>
         ${fotoPendiente("Imagen de la agrupación por proporcionar")}
@@ -636,8 +636,8 @@ function vistaOrganizacion() {
         <h2 id="org-quienes">¿Quiénes somos?</h2>
         <div class="org-panel">
           <span class="etiqueta">Texto provisional</span>
-          <h3>Historia y origen de Bloque Sansano</h3>
-          <p>En este espacio se incorporará la presentación oficial de la agrupación: cómo surgió, cuáles son sus propósitos y cómo se vincula con la comunidad universitaria.</p>
+          <h3>Presentación de Bloque Sansano</h3>
+          <p>En este espacio se incorporará la presentación oficial de Bloque Sansano: quiénes lo integran, cuáles son sus objetivos y cómo busca aportar a la comunidad universitaria.</p>
           <small>Pendiente de información y validación de sus representantes.</small>
         </div>
       </section>
@@ -733,7 +733,7 @@ function vistaBloque(resaltar) {
   ];
   app.innerHTML = `
     <section class="pagina">
-      <a class="volver" href="#organizacion">${ico("atras")} Conoce Bloque Sansano</a>
+      <a class="volver" href="#organizacion">${ico("atras")} Conoce a Bloque Sansano</a>
       <div class="pag-cab">
         <div>
           <span class="etiqueta">Vida en el campus</span>
@@ -1277,7 +1277,7 @@ function vistaRA(id) {
     subtitulo: "El testamento de Federico Santa María",
     descripcion: "Descubre cómo su visión de la educación planteó un desafío frente a las desigualdades sociales, y por qué este debate sigue vigente.",
     boton: "Explorar el testamento",
-    pista: "Enfoca el título TESTAMENTO y las primeras líneas del mural grande del interior, no la placa de la Plaza."
+    pista: "Enfoca las últimas líneas del mural grande, junto al nombre FEDERICO SANTA MARÍA CARRERA y la fecha, no la placa de la Plaza."
   };
 
   app.innerHTML = `
@@ -1337,7 +1337,7 @@ function vistaRA(id) {
     visor.classList.remove("guia");
     visor.innerHTML = `
       <iframe id="ra-frame"
-        src="${esPlaza ? "ra-plaza.html?v=5" : "ra-testamento.html?v=2"}"
+        src="${esPlaza ? "ra-plaza.html?v=5" : "ra-testamento.html?v=3"}"
         allow="camera" title="Cámara de realidad aumentada: ${esc(l.nombre)}"
         style="width:100%;height:100%;border:0;display:block"></iframe>
     `;
@@ -1360,7 +1360,7 @@ function vistaRA(id) {
     if (evento.data?.lugar !== (esPlaza ? "plaza" : "testamento")) return;
 
     if (evento.data.tipo === "USM_RA_ENCONTRADA") {
-      aviso.textContent = esPlaza ? "¡Plaza reconocida! Ya puedes explorar su conexión con Bloque Sansano." : "¡Testamento reconocido! Ya puedes explorar su historia.";
+      aviso.textContent = esPlaza ? "¡Plaza reconocida! Ya puedes explorar su conexión con Bloque Sansano." : "¡Testamento reconocido! Ya puedes explorar su mensaje y su vínculo con la comunidad.";
       // Persistencia: una vez reconocido no depende de mantener el teléfono inmóvil.
       if (!reconocido) {
         reconocido = true;
@@ -1404,7 +1404,7 @@ function vistaElegirRA() {
             <h3>${esc(l.nombre)}</h3>
             <p class="txt">${l.id === 1
               ? "Un legado que sigue vivo: de Federico Santa María a Bloque Sansano. Enfoca la placa pequeña bajo el busto."
-              : "El origen de un compromiso social. Enfoca el título TESTAMENTO y las primeras líneas del mural grande."}</p>
+              : "El origen de un compromiso social. Enfoca las últimas líneas y el nombre FEDERICO SANTA MARÍA CARRERA, al extremo derecho del mural grande."}</p>
             <span class="lugar-link">Elegir esta experiencia ${ico("flecha")}</span>
           </a>
         `).join("")}
@@ -1425,7 +1425,7 @@ function vistaInicio() {
         <p>Recorre los lugares que cuentan la historia y la identidad de la Universidad Técnica Federico Santa María.</p>
         <div class="hero-botones">
           <a class="btn btn-blanco" href="#mapa">${ico("brujula")} Explorar el mapa</a>
-          <a class="btn btn-transp" href="#organizacion">${ico("users")} Conoce Bloque Sansano</a>
+          <a class="btn btn-transp" href="#organizacion">${ico("users")} Conoce a Bloque Sansano</a>
         </div>
       </div>
     </section>
@@ -1448,10 +1448,10 @@ function vistaInicio() {
           <span class="lugar-link">Probar RA ${ico("flecha")}</span>
         </a>
         <a class="tarjeta tarjeta-link" href="#organizacion">
-          <div class="cat"><span class="ico-caja">${ico("users")}</span><span class="etiqueta">Conoce Bloque Sansano</span></div>
-          <h3>Presentación de la agrupación</h3>
-          <p class="txt">Conoce su historia, propósito e iniciativas.</p>
-          <span class="lugar-link">Conocer la agrupación ${ico("flecha")}</span>
+          <div class="cat"><span class="ico-caja">${ico("users")}</span><span class="etiqueta">Conoce a Bloque Sansano</span></div>
+          <h3>¿Qué es Bloque Sansano?</h3>
+          <p class="txt">Conoce sus objetivos, iniciativas y cómo busca aportar a la comunidad universitaria.</p>
+          <span class="lugar-link">Conoce a Bloque Sansano ${ico("flecha")}</span>
         </a>
         <a class="tarjeta tarjeta-link" href="#bloque">
           <div class="cat"><span class="ico-caja">${ico("megafono")}</span><span class="etiqueta">Próximas actividades</span></div>
