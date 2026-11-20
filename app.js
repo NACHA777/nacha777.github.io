@@ -1337,7 +1337,7 @@ function vistaRA(id) {
     visor.classList.remove("guia");
     visor.innerHTML = `
       <iframe id="ra-frame"
-        src="${esPlaza ? "ra-plaza.html?v=4" : "ra-testamento.html?v=1"}"
+        src="${esPlaza ? "ra-plaza.html?v=5" : "ra-testamento.html?v=2"}"
         allow="camera" title="Cámara de realidad aumentada: ${esc(l.nombre)}"
         style="width:100%;height:100%;border:0;display:block"></iframe>
     `;
@@ -1381,6 +1381,39 @@ function vistaRA(id) {
 }
 
 // ---------- vista: Inicio (página principal) ----------
+// ---------- vista: elegir la estación de realidad aumentada ----------
+function vistaElegirRA() {
+  const opciones = lugares.filter((l) => l.ra);
+  app.innerHTML = `
+    <section class="pagina">
+      <a class="volver" href="#inicio">${ico("atras")} Volver al inicio</a>
+      <div class="pag-cab">
+        <div>
+          <span class="etiqueta">${ico("scan")} Realidad aumentada</span>
+          <h1>Elige tu experiencia RA</h1>
+          <p>Dos monumentos, dos perspectivas de una misma historia: el legado de Federico Santa María y su conexión con nuestra comunidad.</p>
+        </div>
+      </div>
+      <div class="grilla" style="margin-top:22px;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))">
+        ${opciones.map((l) => `
+          <a class="tarjeta tarjeta-link" href="#ra-${l.id}">
+            <div class="foto" style="margin-top:0;aspect-ratio:16/9">
+              <img src="${esc(l.foto)}" alt="${esc(l.nombre)}" loading="lazy">
+            </div>
+            <span class="etiqueta">${ico("scan")} Estación RA 0${l.id}</span>
+            <h3>${esc(l.nombre)}</h3>
+            <p class="txt">${l.id === 1
+              ? "Un legado que sigue vivo: de Federico Santa María a Bloque Sansano. Enfoca la placa pequeña bajo el busto."
+              : "El origen de un compromiso social. Enfoca el título TESTAMENTO y las primeras líneas del mural grande."}</p>
+            <span class="lugar-link">Elegir esta experiencia ${ico("flecha")}</span>
+          </a>
+        `).join("")}
+      </div>
+      <div class="aviso">${ico("info")} Puedes explorar el contenido sin cámara desde cualquiera de las dos estaciones.</div>
+    </section>
+  `;
+}
+
 function vistaInicio() {
   const conRA = lugares.filter((l) => l.ra);
   app.innerHTML = `
@@ -1408,7 +1441,7 @@ function vistaInicio() {
           <p class="txt">Explora las paradas del recorrido y conoce la historia de cada lugar.</p>
           <span class="lugar-link">Ir al mapa ${ico("flecha")}</span>
         </a>
-        <a class="tarjeta tarjeta-link" href="#ra-${conRA[0] ? conRA[0].id : 1}">
+        <a class="tarjeta tarjeta-link" href="#ra-elegir">
           <div class="cat"><span class="ico-caja">${ico("scan")}</span><span class="etiqueta">Realidad aumentada</span></div>
           <h3>Apunta tu cámara</h3>
           <p class="txt">Enfoca ${conRA.map((l) => esc(l.corto)).join(" o el ")} y descubre su contenido.</p>
@@ -1510,7 +1543,10 @@ function render() {
   else if (nom == "comunidad") vistaComunidad(param);
   else if (nom == "publicar") location.href = "admin.html";
   else if (nom == "compartir") vistaCompartir(param);
-  else if (nom == "ra") vistaRA(param);
+  else if (nom == "ra") {
+    if (param === "elegir") vistaElegirRA();
+    else vistaRA(param);
+  }
   else {
     location.hash = "mapa";
   }

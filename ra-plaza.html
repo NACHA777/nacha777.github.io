@@ -16,6 +16,7 @@
       padding: 14px 12px; border: 2px solid #f2cc85; border-radius: 12px;
       color: #fff; background: #0d4774; font-weight: bold; font-size: 15px;
       box-shadow: 0 7px 25px rgba(0,0,0,.32); cursor: pointer; }
+    #plaza-abrir { display: none !important; }
     #plaza-abrir[hidden] { display: none !important; }
     #plaza-abrir:focus-visible { outline: 3px solid #ffdb83; outline-offset: 2px; }
   </style>
@@ -35,7 +36,7 @@
 
     <!-- plaza.mind tendrá SOLO la fotografía de la placa, por eso targetIndex=0. -->
     <a-entity id="objetivo-plaza" mindar-image-target="targetIndex: 0">
-      <a-entity id="tarjeta-plaza">
+      <a-entity id="tarjeta-plaza" visible="false">
         <a-plane width="1.16" height="0.52" position="0 0.34 0.06"
           material="color: #E8C786; shader: flat; side: double"></a-plane>
         <a-plane id="plaza-tarjeta-clic" class="clickable-ra" width="1.12" height="0.48"
@@ -67,7 +68,7 @@
     plaza.addEventListener('targetFound', () => {
       reconocido = true;
       botonAbrir.hidden = false;
-      estado.textContent = '¡Plaza reconocida! Toca la tarjeta o el botón inferior.';
+      estado.textContent = '¡Plaza reconocida! Explora su conexión con Bloque Sansano debajo de la cámara.';
       avisar('USM_RA_ENCONTRADA');
     });
     plaza.addEventListener('targetLost', () => {
