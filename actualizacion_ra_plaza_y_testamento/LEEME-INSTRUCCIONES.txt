@@ -1,0 +1,39 @@
+ACTUALIZACIÓN DE AMBAS RA · USM / BLOQUE SANSANO
+===============================================
+Esta carpeta contiene SOLAMENTE archivos para subir a la RA y el diseño.
+La rama de trabajo es feature/presentacion-bloque-sansano (NUNCA main).
+
+QUÉ HACE:
+* Plaza: mantiene targets/plaza.mind, elimina la tarjeta 3D grande y difícil de tocar.
+* Testamento: usa targets/testamento.mind (ya subido a GitHub), sin tocar targets/targets.mind.
+* Ambos: al reconocer aparece una tarjeta azul/dorada en HTML y un botón fijo.
+  El botón permanece disponible aunque se mueva el celular.
+* Plaza: el botón abre los tres capítulos ya existentes con título actualizado.
+* Testamento: abre tres capítulos diferentes, conectando historia y Bloque Sansano.
+* Incluye opción de explorar sin cámara.
+
+SUBIDA A GITHUB:
+1) Abre la carpeta RA_NUEVA del ZIP (NO subas el archivo LEEME ni el ZIP a GitHub).
+2) En la raíz del repo, rama feature/presentacion-bloque-sansano, sube estos 5:
+   index.html
+   app.js
+   ra-plaza.html
+   ra-testamento.html
+   ra-experiencias.css
+3) Acepta reemplazar los tres existentes (index.html, app.js, ra-plaza.html).
+4) No modifiques 'ra.html', 'ra-plaza.css' ni 'targets/targets.mind'.
+5) Comprueba que targets/plaza.mind y targets/testamento.mind siguen presentes.
+
+PRUEBA EN NETLIFY:
+1) En GitHub, selecciona la misma rama y descarga el ZIP del repositorio completo.
+2) Extrae el ZIP, localiza la carpeta con index.html y súbela a Deploys del MISMO sitio
+   Netlify de prueba, lighthearted-souffle-fb1678.
+3) Comprueba la Plaza: /#ra-1, y el Testamento: /#ra-2.
+4) En celular (Safari/Chrome, HTTPS) abre la cámara y prueba la imagen real.
+5) Primero observa la tarjeta fija; luego pulsa el botón para abrir los capítulos.
+
+AVISO:
+El nuevo archivo testamento.mind está compilado, pero la detección del gran mural todavía
+requiere una prueba física; no prometemos que funcione tan bien como el de la Plaza.
+Los contenidos de Bloque Sansano deben validarse con la agrupación antes de publicar en main.
+NO se ha hecho merge ni se ha cambiado la página oficial.

@@ -1,4 +1,4 @@
-<!-- este archivo ejecutara MindAR de forma independiente y comunicará los resultados a la pagina principal -->
+<!-- MindAR reconoce dos monumentos. La Plaza agrega una tarjeta anclada al objetivo 1. -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,30 +8,27 @@
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: #101820;
-    }
+    body { margin: 0; overflow: hidden; background: #101820; font-family: Arial, sans-serif; }
     #estado {
-      position: fixed;
-      top: 15px;
-      left: 5%;
-      width: 90%;
-      box-sizing: border-box;
-      z-index: 10;
-      padding: 12px;
-      background: rgba(0, 35, 70, 0.85);
-      color: white;
-      border-radius: 10px;
-      text-align: center;
-      font: 14px Arial, sans-serif;
+      position: fixed; top: 12px; left: 5%; width: 90%; box-sizing: border-box;
+      z-index: 20; padding: 11px; background: rgba(0,35,70,.87); color: #fff;
+      border-radius: 10px; text-align: center; font-size: 13px; line-height: 1.45;
       pointer-events: none;
     }
+    #plaza-abrir {
+      position: fixed; z-index: 21; left: 5%; bottom: 15px; width: 90%;
+      padding: 14px 12px; border: 2px solid #f2cc85; border-radius: 12px;
+      color: #fff; background: #0d4774; font-weight: bold; font-size: 15px;
+      box-shadow: 0 7px 25px rgba(0,0,0,.32); cursor: pointer;
+    }
+    #plaza-abrir[hidden] { display: none !important; }
+    #plaza-abrir:focus-visible { outline: 3px solid #ffdb83; outline-offset: 2px; }
   </style>
 </head>
 <body>
-  <div id="estado">Iniciando cámara...</div>
+  <div id="estado" role="status" aria-live="polite">Iniciando cámara...</div>
+  <!-- Botón HTML de respaldo para celulares: tocar la tarjeta 3D también abre la historia. -->
+  <button type="button" id="plaza-abrir" hidden>Descubrir el legado de Federico Santa María →</button>
   <a-scene
     mindar-image="imageTargetSrc: ./targets/targets.mind; autoStart: true; uiScanning: yes; uiLoading: yes"
     color-space="sRGB"
@@ -39,71 +36,85 @@
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false"
     embedded>
-    <a-camera
-      position="0 0 0"
-      look-controls="enabled: false">
+    <a-camera position="0 0 0" look-controls="enabled: false"
+      cursor="fuse: false; rayOrigin: mouse;"
+      raycaster="near: 0.01; far: 10000; objects: .clickable-ra">
     </a-camera>
-    <!-- Objetivo 0: Testamento -->
-    <a-entity
-      id="objetivo-testamento"
-      mindar-image-target="targetIndex: 0">
-    </a-entity>
-    <!-- Objetivo 1: Plaza -->
-    <a-entity
-      id="objetivo-plaza"
-      mindar-image-target="targetIndex: 1">
+
+    <!-- Objetivo 0: Testamento. Se deja sin elementos superpuestos. -->
+    <a-entity id="objetivo-testamento" mindar-image-target="targetIndex: 0"></a-entity>
+
+    <!-- Objetivo 1: Plaza. Esta tarjeta se mueve con la imagen reconocida. -->
+    <a-entity id="objetivo-plaza" mindar-image-target="targetIndex: 1">
+      <a-entity id="tarjeta-plaza">
+        <a-plane width="1.16" height="0.52" position="0 0.34 0.06"
+          material="color: #E8C786; shader: flat; side: double"></a-plane>
+        <a-plane id="plaza-tarjeta-clic" class="clickable-ra" width="1.12" height="0.48"
+          position="0 0.34 0.071"
+          material="color: #102E4D; opacity: 0.96; shader: flat; side: double"></a-plane>
+        <a-text value="EL CONOCIMIENTO&#10;NO DEBERÍA SER&#10;UN PRIVILEGIO"
+          position="0 0.414 0.080" width="1.65" align="center" color="#FFFFFF"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json"
+          wrap-count="30" anchor="center" baseline="center"></a-text>
+        <a-text value="TOCA PARA DESCUBRIR EL LEGADO"
+          position="0 0.207 0.080" width="1.53" align="center"
+          color="#FFE1A0" wrap-count="43" anchor="center" baseline="center"></a-text>
+      </a-entity>
     </a-entity>
   </a-scene>
   <script>
-    const estado = document.querySelector("#estado");
-    const testamento = document.querySelector(
-      "#objetivo-testamento"
-    );
-    const plaza = document.querySelector(
-      "#objetivo-plaza"
-    );
+    const estado = document.getElementById("estado");
+    const testamento = document.getElementById("objetivo-testamento");
+    const plaza = document.getElementById("objetivo-plaza");
+    const botonAbrir = document.getElementById("plaza-abrir");
+    const modo = new URLSearchParams(window.location.search).get("lugar");
+    const modoPlaza = modo === "plaza";
+    let plazaReconocida = false;
+
+    // En la RA del Testamento, la tarjeta de la Plaza nunca se muestra.
+    if (!modoPlaza) document.getElementById("tarjeta-plaza").setAttribute("visible", "false");
+
+    function avisar(tipo, lugar) {
+      window.parent.postMessage({ tipo, lugar }, window.location.origin);
+    }
+    function abrirLegado() {
+      if (modoPlaza && plazaReconocida) avisar("USM_RA_ABRIR_PLAZA", "plaza");
+    }
+    botonAbrir.addEventListener("click", abrirLegado);
+    document.getElementById("plaza-tarjeta-clic").addEventListener("click", abrirLegado);
+
     function configurarObjetivo(elemento, lugar, nombre) {
       elemento.addEventListener("targetFound", () => {
-        estado.textContent = nombre + " reconocido";
-        window.parent.postMessage(
-          {
-            tipo: "USM_RA_ENCONTRADA",
-            lugar: lugar
-          },
-          window.location.origin
-        );
+        if (lugar !== modo) return;
+        if (lugar === "plaza") {
+          plazaReconocida = true;
+          botonAbrir.hidden = false;
+          estado.textContent = "¡Plaza reconocida! Toca la tarjeta flotante o el botón inferior.";
+        } else {
+          estado.textContent = nombre + " reconocido";
+        }
+        avisar("USM_RA_ENCONTRADA", lugar);
       });
       elemento.addEventListener("targetLost", () => {
+        if (lugar !== modo) return;
+        if (lugar === "plaza") {
+          plazaReconocida = false;
+          botonAbrir.hidden = true;
+        }
         estado.textContent = "Buscando monumento...";
-        window.parent.postMessage(
-          {
-            tipo: "USM_RA_PERDIDA",
-            lugar: lugar
-          },
-          window.location.origin
-        );
+        avisar("USM_RA_PERDIDA", lugar);
       });
     }
-    configurarObjetivo(
-      testamento,
-      "testamento",
-      "Testamento de Federico Santa María"
-    );
-    configurarObjetivo(
-      plaza,
-      "plaza",
-      "Plaza Federico Santa María"
-    );
-    document.querySelector("a-scene")
-      .addEventListener("arReady", () => {
-        estado.textContent =
-          "Apunta hacia el Testamento o el monumento de la Plaza";
-      });
-    document.querySelector("a-scene")
-      .addEventListener("arError", () => {
-        estado.textContent =
-          "Error al iniciar RA. Revisa los permisos de cámara.";
-      });
+    configurarObjetivo(testamento, "testamento", "Testamento de Federico Santa María");
+    configurarObjetivo(plaza, "plaza", "Plaza Federico Santa María");
+    document.querySelector("a-scene").addEventListener("arReady", () => {
+      estado.textContent = modoPlaza
+        ? "Apunta al monumento de la Plaza Federico Santa María"
+        : "Apunta a la placa del Testamento de Federico Santa María";
+    });
+    document.querySelector("a-scene").addEventListener("arError", () => {
+      estado.textContent = "Error al iniciar RA. Revisa los permisos de cámara.";
+    });
   </script>
 </body>
 </html>

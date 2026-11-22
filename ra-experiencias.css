@@ -1,0 +1,32 @@
+/* Reconocimiento cómodo y accesible: el contenido es HTML fijo, no un objeto 3D. */
+.visor:not(.guia) { height: min(65dvh, 580px); min-height: 370px; aspect-ratio: auto; background: #071b30; }
+.visor:not(.guia) iframe { width:100%; height:100%; display:block; }
+.ra-descubrimiento { box-sizing: border-box; background:#102c48; color:#fff; margin-top:16px; padding:18px; border-radius:20px; border:1px solid #c09f69; box-shadow:0 14px 28px rgba(8,28,50,.14); }
+.ra-descubrimiento[hidden] { display:none !important; }
+.ra-descubrimiento, .ra-descubrimiento * { box-sizing:border-box; }
+.ra-descubrimiento__encabezado { display:flex;align-items:center;justify-content:center;gap:8px;color:#a2e9c8;font-size:13px;font-weight:800;text-align:center;margin-bottom:14px; }
+.ra-descubrimiento__encabezado .ico { width:18px;height:18px; }
+.ra-descubrimiento__panel { text-align:center; background:#173956;border:1px solid #bfa16b;border-radius:15px;padding:20px 16px 22px; }
+.ra-descubrimiento__simbolo { display:grid;place-items:center;color:#e8c786;margin-bottom:10px; }
+.ra-descubrimiento__simbolo .ico { width:35px;height:35px; }
+.ra-descubrimiento__panel h2 {font-size:clamp(23px,5vw,30px);line-height:1.16;color:#fff;font-weight:800;margin:0 auto;max-width:22ch;}
+.ra-descubrimiento__subtitulo { color:#e8c786;font-size:14px;font-weight:800;margin:13px 0 0; }
+.ra-descubrimiento__descripcion { color:#e7edf6;font-size:14px;line-height:1.6;margin:14px 0 0; }
+.ra-descubrimiento__btn { display:flex;align-items:center;justify-content:center;gap:9px;width:100%; min-height:50px; border:0;border-radius:11px;background:#e8c786;color:#102c48;font:inherit;font-size:15px;font-weight:800;cursor:pointer;margin-top:15px;padding:13px 16px; }
+.ra-descubrimiento__btn:hover { background:#f5d99e; }
+.ra-descubrimiento__btn .ico {width:18px;height:18px;}
+.ra-descubrimiento__btn:focus-visible {outline:3px solid #fff;outline-offset:3px;}
+.testamento-legado .plaza-legado__imagen img {object-position:center 45%;}
+.testamento-legado .plaza-legado__intro {background:radial-gradient(circle at 100% 0,rgba(235,188,110,.20),transparent 57%),linear-gradient(135deg,#0c2d4e,#102c48);}
+@media (max-width:760px) {
+  .visor:not(.guia) {height:min(62dvh,520px);min-height:340px;}
+  .ra-descubrimiento {padding:14px;}
+  .ra-descubrimiento__panel {padding:18px 13px;}
+  .pagina.ra.ra-detectada {padding-bottom:100px;}
+  .pagina.ra.ra-detectada .ra-descubrimiento__btn {
+    position:fixed;bottom:calc(14px + env(safe-area-inset-bottom,0px));left:max(16px,env(safe-area-inset-left,0px));
+    right:max(16px,env(safe-area-inset-right,0px));width:calc(100% - 32px);max-width:560px;
+    margin:0 auto;z-index:30;box-shadow:0 9px 27px rgba(5,26,48,.34);border:2px solid #102c48;
+  }
+}
+@media (prefers-reduced-motion:reduce) { .ra-descubrimiento * {animation:none!important;transition:none!important;} }

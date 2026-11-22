@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reconocimiento RA · Plaza Federico Santa María</title>
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <style>
+    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#071b30;font-family:system-ui,-apple-system,Arial,sans-serif}
+    #estado{position:fixed;top:10px;left:5%;width:90%;box-sizing:border-box;z-index:25;padding:10px 12px;border-radius:10px;
+      background:rgba(9,33,58,.86);color:#fff;text-align:center;font-size:13px;line-height:1.45;pointer-events:none}
+    #estado.encontrado{background:rgba(12,71,56,.93);border:1px solid #9be3c6}
+    a-scene{display:block;width:100%;height:100%}
+  </style>
+</head>
+<body>
+  <div id="estado" role="status" aria-live="polite">Iniciando cámara...</div>
+  <a-scene mindar-image="imageTargetSrc: ./targets/plaza.mind; autoStart: true; uiScanning: yes; uiLoading: yes"
+    color-space="sRGB" renderer="colorManagement: true" vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false" embedded>
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    <a-entity id="objetivo" mindar-image-target="targetIndex: 0"></a-entity>
+  </a-scene>
+  <script>
+    const estado = document.getElementById('estado');
+    const escena = document.querySelector('a-scene');
+    const objetivo = document.getElementById('objetivo');
+    let visto = false;
+    function avisar(tipo){
+      if(window.parent!==window) window.parent.postMessage({tipo,lugar:'plaza'},window.location.origin);
+    }
+    objetivo.addEventListener('targetFound',()=>{
+      visto=true;
+      estado.classList.add('encontrado');
+      estado.textContent='¡Plaza reconocida! Ya puedes explorar la información debajo de la cámara.';
+      avisar('USM_RA_ENCONTRADA');
+    });
+    objetivo.addEventListener('targetLost',()=>{
+      // Dejar la información disponible; el seguimiento puede perderse al mover el celular.
+      if(!visto) estado.textContent='Buscando la placa pequeña...';
+      avisar('USM_RA_PERDIDA');
+    });
+    escena.addEventListener('arReady',()=>{
+      estado.textContent='Apunta al título TESTAMENTO de la placa pequeña bajo el busto.';
+    });
+    escena.addEventListener('arError',()=>{
+      estado.textContent='No se pudo iniciar la RA. Revisa permisos de cámara o el archivo de reconocimiento.';
+    });
+  </script>
+</body>
+</html>

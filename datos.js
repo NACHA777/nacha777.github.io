@@ -50,15 +50,15 @@ const lugares = [
     identidad:
       "Propone una mirada al sentido de nuestra comunidad y a la memoria que acompaña la identidad sansana.",
     mas: [
-      "Federico Santa María Carrera redactó su testamento en París en 1920. En él dejó establecido que la institución debía dar oportunidades a jóvenes con talento, sin importar su condición económica.",
-      "Su legado no fue solo económico: propuso una educación basada en el mérito, el esfuerzo y la excelencia, principios que hoy forman parte del llamado «Espíritu Sansano».",
+      "Federico Santa María Carrera redactó su testamento en París en 1920. En él propuso destinar recursos a la formación de jóvenes de escasos recursos que demostraran aptitudes y dedicación.",
+      "Su legado impulsó una visión de educación técnica y científica ligada al mérito, el esfuerzo y una preocupación por ampliar las oportunidades de formación.",
     ],
     dato: {
       titulo: "Símbolos de la universidad",
       texto:
         "El escudo, diseñado a fines de 1920, une las armas de las familias Santa María y Carrera. La bandera, definida en 1931, toma de él sus franjas roja, amarilla y azul.",
     },
-    ra: true,
+    ra: false, // El Testamento ahora es una experiencia de lectura interactiva, sin cámara.
     placa: "la placa del Testamento de Federico Santa María",
   },
   {
@@ -68,13 +68,15 @@ const lugares = [
     tema: "Pausa",
     x: 870,
     y: 712,
-    foto: "",
+    foto: "img/cerrito-campus-san-joaquin.jpg",
+    fuenteFoto: "Oxifer · vista general del Campus San Joaquín",
+    fuenteFotoUrl: "https://oxifer.cl/campus-san-joaquin-federico-santa-maria-santiago/",
     desc: "Un rincón verde para hacer una pausa durante el recorrido.",
     identidad:
       "Invita a habitar el campus más allá del aula y a construir vínculos cotidianos con la comunidad sansana.",
     mas: [
-      "El Cerrito es uno de los principales espacios de encuentro y recreación del campus. Los estudiantes lo usan para almorzar, descansar y compartir.",
-      "También recibe actividades organizadas por los centros de estudiantes, como fondas, tocatas y ferias. Más que un punto histórico, es un lugar donde la identidad sansana se construye hoy, en la convivencia diaria.",
+      "El Cerrito es un lugar de encuentro y recreación dentro del campus, donde la comunidad estudiantil puede descansar, compartir y participar en actividades.",
+      "Es un espacio donde la identidad sansana se construye a través de la convivencia cotidiana.",
     ],
     ra: false,
   },
@@ -86,13 +88,15 @@ const lugares = [
     x: 645,
     y: 730,
     izq: true,
-    foto: "",
-    desc: "Un espacio para imaginar encuentros, ideas y experiencias compartidas.",
+    foto: "img/aula-magna.jpg",
+    fuenteFoto: "Extensión USM",
+    fuenteFotoUrl: "https://extension.usm.cl/wp-content/uploads/2022/07/AULA-MAGNA-SAN-JOAQUIN-19JPG.jpg",
+    desc: "Un espacio de encuentro académico, cultural e institucional.",
     identidad:
       "Nos recuerda el valor de reunirnos y de participar en la vida cultural y universitaria sansana.",
     mas: [
       "El Aula Magna es uno de los principales espacios de encuentro académico, cultural e institucional del Campus San Joaquín.",
-      "Aquí se realizan charlas, ceremonias y eventos culturales que acompañan a los estudiantes en distintas etapas de su vida universitaria. Muestra que la experiencia sansana va más allá de la sala de clases.",
+      "Aquí se realizan ceremonias, charlas y actividades que enriquecen la experiencia universitaria y fortalecen los vínculos entre estudiantes y comunidad.",
     ],
     ra: false,
   },

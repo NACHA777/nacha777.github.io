@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RA de la Plaza Federico Santa María</title>
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <style>
+    body { margin: 0; overflow: hidden; background: #101820; font-family: Arial, sans-serif; }
+    #estado { position: fixed; top: 12px; left: 5%; width: 90%; box-sizing: border-box;
+      z-index: 20; padding: 11px; background: rgba(0,35,70,.87); color: #fff;
+      border-radius: 10px; text-align: center; font-size: 13px; line-height: 1.45;
+      pointer-events: none; }
+    #plaza-abrir { position: fixed; z-index: 21; left: 5%; bottom: 15px; width: 90%;
+      padding: 14px 12px; border: 2px solid #f2cc85; border-radius: 12px;
+      color: #fff; background: #0d4774; font-weight: bold; font-size: 15px;
+      box-shadow: 0 7px 25px rgba(0,0,0,.32); cursor: pointer; }
+    #plaza-abrir { display: none !important; }
+    #plaza-abrir[hidden] { display: none !important; }
+    #plaza-abrir:focus-visible { outline: 3px solid #ffdb83; outline-offset: 2px; }
+  </style>
+</head>
+<body>
+  <div id="estado" role="status" aria-live="polite">Iniciando cámara...</div>
+  <button type="button" id="plaza-abrir" hidden>Descubrir el legado de Federico Santa María →</button>
+  <!-- Un solo objetivo: la placa real del testamento, fotografiada de frente.
+       El contenido es el recorrido social de la PLAZA, no la ficha del Testamento. -->
+  <a-scene
+    mindar-image="imageTargetSrc: ./targets/plaza.mind; autoStart: true; uiScanning: yes; uiLoading: yes"
+    color-space="sRGB" renderer="colorManagement: true"
+    vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" embedded>
+    <a-camera position="0 0 0" look-controls="enabled: false"
+      cursor="fuse: false; rayOrigin: mouse;"
+      raycaster="near: 0.01; far: 10000; objects: .clickable-ra"></a-camera>
+
+    <!-- plaza.mind tendrá SOLO la fotografía de la placa, por eso targetIndex=0. -->
+    <a-entity id="objetivo-plaza" mindar-image-target="targetIndex: 0">
+      <a-entity id="tarjeta-plaza" visible="false">
+        <a-plane width="1.16" height="0.52" position="0 0.34 0.06"
+          material="color: #E8C786; shader: flat; side: double"></a-plane>
+        <a-plane id="plaza-tarjeta-clic" class="clickable-ra" width="1.12" height="0.48"
+          position="0 0.34 0.071"
+          material="color: #102E4D; opacity: 0.96; shader: flat; side: double"></a-plane>
+        <a-text value="EL CONOCIMIENTO&#10;NO DEBERÍA SER&#10;UN PRIVILEGIO"
+          position="0 0.414 0.080" width="1.65" align="center" color="#FFFFFF"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json"
+          wrap-count="30" anchor="center" baseline="center"></a-text>
+        <a-text value="TOCA PARA DESCUBRIR EL LEGADO"
+          position="0 0.207 0.080" width="1.53" align="center"
+          color="#FFE1A0" wrap-count="43" anchor="center" baseline="center"></a-text>
+      </a-entity>
+    </a-entity>
+  </a-scene>
+  <script>
+    const estado = document.getElementById('estado');
+    const plaza = document.getElementById('objetivo-plaza');
+    const botonAbrir = document.getElementById('plaza-abrir');
+    let reconocido = false;
+    function avisar(tipo) {
+      window.parent.postMessage({ tipo, lugar: 'plaza' }, window.location.origin);
+    }
+    function abrirLegado() {
+      if (reconocido) avisar('USM_RA_ABRIR_PLAZA');
+    }
+    botonAbrir.addEventListener('click', abrirLegado);
+    document.getElementById('plaza-tarjeta-clic').addEventListener('click', abrirLegado);
+    plaza.addEventListener('targetFound', () => {
+      reconocido = true;
+      botonAbrir.hidden = false;
+      estado.textContent = '¡Plaza reconocida! Explora su conexión con Bloque Sansano debajo de la cámara.';
+      avisar('USM_RA_ENCONTRADA');
+    });
+    plaza.addEventListener('targetLost', () => {
+      reconocido = false;
+      botonAbrir.hidden = true;
+      estado.textContent = 'Buscando la placa del monumento...';
+      avisar('USM_RA_PERDIDA');
+    });
+    document.querySelector('a-scene').addEventListener('arReady', () => {
+      estado.textContent = 'Apunta de cerca y de frente a la placa del testamento';
+    });
+    document.querySelector('a-scene').addEventListener('arError', () => {
+      estado.textContent = 'Error de RA: revisa permisos de cámara y targets/plaza.mind';
+    });
+  </script>
+</body>
+</html>
