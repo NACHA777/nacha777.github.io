@@ -617,112 +617,48 @@ function abrirFicha(id) {
 }
 
 // ---------- vista: conoce Bloque Sansano ----------
-// Los espacios provisionales se completarán solo con información oficial validada.
 function vistaOrganizacion() {
-  const fotoPendiente = (nombre) => `
-    <div class="org-foto" role="img" aria-label="Fotografía pendiente: ${nombre}">
-      ${ico("imagen")}
-      <b>Fotografía oficial pendiente</b>
-      <small>${nombre}</small>
-    </div>`;
-
   app.innerHTML = `
     <section class="org-pagina">
       <a class="volver" href="#inicio">${ico("atras")} Volver al inicio</a>
-
-      <header class="org-hero">
-        <div>
-          <span class="etiqueta">Vida en el campus</span>
-          <h1>Conoce a Bloque Sansano</h1>
-          <p>Un espacio para conocer sus objetivos, iniciativas y cómo busca aportar a la comunidad universitaria.</p>
-          <p class="org-pendiente">Contenido pendiente de validación oficial</p>
-        </div>
-        ${fotoPendiente("Imagen de la agrupación por proporcionar")}
+      <header>
+        <h1>Bloque Sansano</h1>
+        <p>El Bloque Sansano nace desde las bases como una herramienta de articulación estudiantil con el fin de canalizar, potenciar y organizar la fuerza colectiva para disputar y transformar tanto nuestra realidad interna en el Campus Santiago como las problemáticas sociales externas que nos afectan actualmente.</p>
       </header>
 
-      <section class="org-seccion" aria-labelledby="org-quienes">
-        <h2 id="org-quienes">¿Quiénes somos?</h2>
+      <section class="org-seccion" aria-labelledby="org-principios">
+        <h2 id="org-principios">¿Qué nos mueve?</h2>
         <div class="org-panel">
-          <span class="etiqueta">Texto provisional</span>
-          <h3>Presentación de Bloque Sansano</h3>
-          <p>En este espacio se incorporará la presentación oficial de Bloque Sansano: quiénes lo integran, cuáles son sus objetivos y cómo busca aportar a la comunidad universitaria.</p>
-          <small>Pendiente de información y validación de sus representantes.</small>
+          <p>Rechazamos la mercantilización de la educación y el modelo neoliberal que la sostiene. Exigimos una universidad verdaderamente comprometida con las urgencias de la realidad nacional.</p>
+          <p>Creamos un bloque de unidad transparente, consecuente y comprometido con el movimiento estudiantil. Este proyecto parte de la convicción de que la universidad debe vincularse activamente con la realidad social y el bienestar de los estudiantes, garantizando espacios de participación real, democrática y resolutiva para todos.</p>
         </div>
       </section>
 
-      <section class="org-seccion" aria-labelledby="org-mision">
-        <h2 id="org-mision">Misión y objetivos</h2>
-        <div class="org-tarjetas">
-          <article class="org-tarjeta">
-            ${ico("foco")}
-            <h3>Misión</h3>
-            <p>Incorporar aquí la misión oficial de la agrupación.</p>
-          </article>
-          <article class="org-tarjeta">
-            ${ico("pin")}
-            <h3>Objetivos</h3>
-            <p>Incorporar aquí los objetivos definidos por Bloque Sansano.</p>
-          </article>
-          <article class="org-tarjeta">
-            ${ico("users")}
-            <h3>Valores</h3>
-            <p>Incorporar aquí los valores que la agrupación declare.</p>
-          </article>
+      <section class="org-seccion" aria-labelledby="org-actividades">
+        <h2 id="org-actividades">¿Cómo participamos?</h2>
+        <p>Estaremos sumándonos a las convocatorias nacionales y abriendo espacios en el campus mediante jornadas de discusión, charlas formativas y agitación política.</p>
+        <a class="btn btn-linea" href="#bloque">Ver próximas convocatorias ${ico("flecha")}</a>
+      </section>
+
+      <section class="org-seccion" aria-labelledby="org-fotos">
+        <h2 id="org-fotos">Galería de Bloque Sansano</h2>
+        <div class="org-galeria org-fotos">
+          <a href="img/bloque-sansano/pintura-colectiva.jpg"><img src="img/bloque-sansano/pintura-colectiva.jpg" width="899" height="1599" loading="lazy" alt="Estudiantes pintan las letras de un lienzo en una cancha."></a>
+          <a href="img/bloque-sansano/detalle-lienzo.jpg"><img src="img/bloque-sansano/detalle-lienzo.jpg" width="1200" height="1600" loading="lazy" alt="Varias manos pintan la frase «Para que nunca más en Chile»."></a>
+          <a href="img/bloque-sansano/lienzo-cancha.jpg"><img src="img/bloque-sansano/lienzo-cancha.jpg" width="1600" height="1200" loading="lazy" alt="Lienzo terminado con letras negras y rojas frente a un arco."></a>
+          <a href="img/bloque-sansano/marcha.jpg"><img src="img/bloque-sansano/marcha.jpg" width="2048" height="1536" loading="lazy" alt="Participantes de una marcha sostienen carteles sobre educación."></a>
+          <a href="img/bloque-sansano/mesa-memoria.jpg"><img src="img/bloque-sansano/mesa-memoria.jpg" width="1200" height="1600" loading="lazy" alt="Mesa al aire libre con ilustraciones y afiches de reconocimiento."></a>
+          <a href="img/bloque-sansano/verdad-y-justicia.jpg"><img src="img/bloque-sansano/verdad-y-justicia.jpg" width="1200" height="1600" loading="lazy" alt="Una rosa roja junto a un afiche de «Verdad y Justicia» en un árbol."></a>
         </div>
       </section>
 
-      <section class="org-seccion" aria-labelledby="org-hacemos">
-        <h2 id="org-hacemos">¿Qué hacemos?</h2>
-        <p class="org-intro">Espacios para presentar iniciativas reales de la agrupación, pendientes de validar.</p>
-        <div class="org-iniciativas">
-          ${[1, 2, 3].map((numero) => `
-            <article class="org-iniciativa">
-              ${fotoPendiente(`Imagen de la iniciativa ${numero}`)}
-              <div>
-                <h3>Iniciativa ${numero} · Por completar</h3>
-                <p>Nombre y descripción oficial de una iniciativa realizada por Bloque Sansano.</p>
-              </div>
-            </article>
-          `).join("")}
-        </div>
-      </section>
-
-      <section class="org-seccion" aria-labelledby="org-galeria">
-        <h2 id="org-galeria">Galería</h2>
-        <p class="org-intro">Fotografías de integrantes y actividades · Material oficial por proporcionar.</p>
-        <div class="org-galeria">
-          ${[1, 2, 3, 4, 5, 6].map((numero) => fotoPendiente(`Fotografía ${numero} por proporcionar`)).join("")}
-        </div>
-      </section>
-
-      <section class="org-seccion" aria-labelledby="org-contacto">
-        <h2 id="org-contacto">Redes y contacto</h2>
-        <div class="org-contactos">
-          <article class="org-tarjeta">
-            ${ico("mensaje")}
-            <h3>Instagram</h3>
-            <p>Usuario oficial por confirmar.</p>
-            <small>Sin enlace activo hasta su validación.</small>
-          </article>
-          <article class="org-tarjeta">
-            ${ico("mensaje")}
-            <h3>Otros medios oficiales</h3>
-            <p>Correo o medio de contacto oficial por confirmar.</p>
-            <small>Sin enlace activo hasta su validación.</small>
-          </article>
-        </div>
-      </section>
-
-      <section class="org-cta" aria-labelledby="org-actividades">
+      <section class="org-cta" aria-labelledby="org-contacto">
         <div>
-          <span class="etiqueta">Actividades</span>
-          <h2 id="org-actividades">Próximas convocatorias</h2>
-          <p>Consulta las actividades publicadas por los representantes de Bloque Sansano.</p>
+          <h2 id="org-contacto">Súmate a trabajar con nosotros</h2>
+          <p>Infórmate, organízate y asume un rol activo en la transformación de nuestra universidad.</p>
         </div>
-        <a class="btn btn-azul" href="#bloque">Ver próximas convocatorias ${ico("flecha")}</a>
+        <a class="btn btn-azul" href="https://www.instagram.com/bloque.sansano/">Instagram · @bloque.sansano</a>
       </section>
-
-      <footer class="pie-pag"><span>Campus San Joaquín · USM</span><span>Contenido de la agrupación pendiente de validación</span></footer>
     </section>`;
 }
 

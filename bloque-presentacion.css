@@ -54,3 +54,7 @@
   .inicio .grilla { grid-template-columns: minmax(0, 1fr); }
   .inicio .grilla > .tarjeta:nth-child(n) { grid-column: 1; }
 }
+
+
+.org-fotos a { display: block; }
+.org-fotos img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 10px; }
